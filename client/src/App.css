@@ -1,0 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap");
+.App {
+  font-family: "Work Sans", sans-serif;
+  /* max-height: 100vh; */
+}
