@@ -109,17 +109,18 @@ the response of this function in success (User login with google success), in fa
 */
 const googleSignIn = async (req, res) => {
   try {
-    let { name, email, pic } = req.body;
-    const oldUser = await users.findOne({ email, isDeleted: false });
+    let { firstName, lastName, username, email } = req.body;
+    const oldUser = await users.findOne({
+      email,
+      isDeleted: false,
+    });
     if (oldUser) {
       var token = jwt.sign(
         {
           data: {
-            name: oldUser.name,
-            email: oldUser.email,
+            username: oldUser.username,
             role: oldUser.role,
           },
-          exp: Math.floor(Date.now() / 1000) + 60 * 60,
         },
         process.env.ENCRYPT_KEY
       );
@@ -129,13 +130,24 @@ const googleSignIn = async (req, res) => {
       });
     } else {
       const randomPassword = generatePassword();
-      const newUser = new users({ name, email, password: randomPassword, pic });
+      const newUser = new users({
+        username: firstName + lastName + email,
+        password: randomPassword,
+
+        firstName,
+        lastName,
+
+        birthDate: new Date(),
+        gender: "Google Login",
+
+        nationality: "Google Login",
+        email,
+      });
       const data = await newUser.save();
 
       var token = jwt.sign(
         {
-          data: { name: data.name, email: data.email, role: data.role },
-          exp: Math.floor(Date.now() / 1000) + 60 * 60,
+          data: { username: data.username, role: data.role },
         },
         process.env.ENCRYPT_KEY
       );

@@ -51,6 +51,11 @@ const userJoi = {
       .object()
       .required()
       .keys({
+        username: joi.string().required(),
+
+        firstName: joi.string().required(),
+        lastName: joi.string().required(),
+
         email: joi
           .string()
           .email({
@@ -58,8 +63,6 @@ const userJoi = {
             tlds: { allow: ["com", "net"] },
           })
           .required(),
-        name: joi.string().required(),
-        pic: joi.string().required(),
       }),
   },
 

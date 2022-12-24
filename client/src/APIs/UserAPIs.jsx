@@ -41,8 +41,9 @@ export const ContinueWithGoogleAPI = async (token) => {
     console.log({ decoded });
     const res = await client.post(`google`, {
       email: decoded.email,
-      name: decoded.name,
-      pic: decoded.picture,
+      firstName: decoded.given_name,
+      lastName: decoded.family_name,
+      username: decoded.name,
     });
     return res;
   } catch (error) {

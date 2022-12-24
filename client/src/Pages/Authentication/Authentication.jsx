@@ -179,16 +179,25 @@ function Authentication() {
   return (
     <>
       {!waiting ? (
-        <div className="mt-5 d-flex justify-content-center align-items-center">
+        <div
+          className="mt-5 d-flex justify-content-center align-items-center"
+          style={{}}
+        >
           <Form
             className="w-50 p-4 rounded-1"
             onSubmit={handleSubmit}
             style={{
-              backgroundColor: "#fbfbfb",
+              backgroundColor: "#bcbcb84b",
             }}
           >
             <div className="text-center ">
-              <h2>Fifa-Qatar-2022</h2>
+              <h2
+                style={{
+                  color: "#8b1538",
+                }}
+              >
+                Fifa-Qatar-2022
+              </h2>
             </div>
             {/* // ===== --- ===== ### User-First-Name-Input ### ===== --- ===== // */}
             {!isSignIn && (
@@ -450,9 +459,12 @@ function Authentication() {
             )}
             {/* // ===== --- ===== ### Submit-Buttons ### ===== --- ===== // */}
             <Button
-              className="w-100 mb-3"
-              variant="info"
               type="submit"
+              className={[Style.submitBtn, "w-100 mb-3"].join(" ")}
+              style={{
+                backgroundColor: "#8b1538",
+                borderColor: "#8b1538",
+              }}
               disabled={
                 (!isSignIn &&
                   (waiting ||
@@ -492,7 +504,13 @@ function Authentication() {
               cookiePolicy={"single_host_origin"}
             />
             {isSignIn && (
-              <Alert variant="primary">
+              <Alert
+                style={{
+                  backgroundColor: "transparent",
+                  border: "none",
+                  color: "black",
+                }}
+              >
                 <>
                   <span>Don't have an account ? </span>
                   <span
@@ -501,6 +519,9 @@ function Authentication() {
                       setIsSignIn(false);
                       navigate(`/register`);
                     }}
+                    style={{
+                      color: "#8b1538",
+                    }}
                   >
                     Sign Up
                   </span>
@@ -508,7 +529,13 @@ function Authentication() {
               </Alert>
             )}
             {!isSignIn && (
-              <Alert variant="primary">
+              <Alert
+                style={{
+                  backgroundColor: "transparent",
+                  border: "none",
+                  color: "black",
+                }}
+              >
                 <>
                   <span>Already have an account ? </span>
                   <span
@@ -516,6 +543,9 @@ function Authentication() {
                     onClick={() => {
                       setIsSignIn(true);
                       navigate(`/login`);
+                    }}
+                    style={{
+                      color: "#8b1538",
                     }}
                   >
                     Sign In

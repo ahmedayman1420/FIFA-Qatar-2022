@@ -13,15 +13,20 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 // ===== --- ===== ### React-Redux ### ===== --- ===== //
 import { Provider } from "react-redux";
-import { store } from "./Redux/Store/store";
+import { store, persistor } from "./Redux/Store/store";
+
+// ===== --- ===== ### Redux-Persist ### ===== --- ===== //
+import { PersistGate } from "redux-persist/integration/react";
 
 // ===== --- ===== ### Root ### ===== --- ===== //
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <PersistGate loading={null} persistor={persistor}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </PersistGate>
   </Provider>
 );
 

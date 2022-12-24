@@ -6,3 +6,4 @@ export const UNEXPECTED_ERROR = "UNEXPECTED_ERROR";
 export const CONTINUE_WITH_GOOGLE = "CONTINUE_WITH_GOOGLE";
 export const REGISTER = "REGISTER";
 export const LOGIN = "LOGIN";
+export const USER_RESET = "USER_RESET";

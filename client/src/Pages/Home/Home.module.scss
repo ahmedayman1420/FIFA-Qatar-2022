@@ -1,0 +1,63 @@
+/* Main Section */
+.mainSection {
+  height: 83.9vh;
+}
+
+.mainImg {
+  width: 100%;
+  height: 100%;
+  background-image: url("../../Images/worldCup.jpg");
+  background-size: cover;
+  position: fixed;
+  z-index: -1;
+  top: 30px;
+}
+
+.mainText {
+  position: absolute;
+  color: white;
+  margin: 10rem 0 0 3rem;
+  position: fixed;
+  top: 100px;
+  z-index: -1;
+}
+
+.cup {
+  font-size: 4.25rem;
+  text-shadow: 1px 4px 4px black;
+}
+
+.arab {
+  font-family: "Arabic-font";
+  text-shadow: 1px 4px 4px black;
+  font-size: 3rem;
+  margin-left: 7rem;
+  //   margin-top: -50px;
+}
+
+.eng {
+  text-shadow: 1px 4px 4px black;
+  font-size: 2.5rem;
+  margin-left: 8rem;
+  //   margin-top: -30px;
+}
+
+.qatar {
+  background-clip: text;
+  background-image: url("../../Images/qatar.png");
+  background-size: cover;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-filter: drop-shadow(1px 4px 4px black);
+  filter: drop-shadow(1px 4px 4px black);
+  text-shadow: none;
+}
+
+.Groups {
+  width: 100%;
+  border-top: 100px solid #8b1538;
+}
+
+.Groups img {
+  width: 100%;
+}

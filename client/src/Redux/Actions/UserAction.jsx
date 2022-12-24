@@ -1,4 +1,10 @@
 // ===== --- ===== ### Action-String ### ===== --- ===== //
+import {
+  REGISTER,
+  USER_RESET,
+  CONTINUE_WITH_GOOGLE,
+  LOGIN,
+} from "./ActionStrings";
 
 // ===== --- ===== ### Error-Action ### ===== --- ===== //
 import { errorResetAction, unexpectedErrorAction } from "./ErrorActions";
@@ -17,11 +23,22 @@ export const ContinueWithGoogleAction = (token) => async (dispatch) => {
   if (Math.floor(res.status / 100) !== 2) {
     let message = res.response.data.message;
     dispatch(unexpectedErrorAction(message));
+
+    dispatch({
+      type: USER_RESET,
+      payload: {},
+    });
+
     return false;
   } else {
     dispatch(errorResetAction());
     localStorage.setItem("token", res.data.payload.token);
-    localStorage.setItem("User", res.data.payload.user);
+
+    dispatch({
+      type: CONTINUE_WITH_GOOGLE,
+      payload: res.data.payload.user,
+    });
+
     return true;
   }
 };
@@ -32,11 +49,22 @@ export const SignUpAction = (user) => async (dispatch) => {
   if (Math.floor(res.status / 100) !== 2) {
     let message = res.response.data.message;
     dispatch(unexpectedErrorAction(message));
+
+    dispatch({
+      type: USER_RESET,
+      payload: {},
+    });
+
     return false;
   } else {
     dispatch(errorResetAction());
     localStorage.setItem("token", res.data.payload.token);
-    localStorage.setItem("User", res.data.payload.user);
+
+    dispatch({
+      type: REGISTER,
+      payload: res.data.payload.user,
+    });
+
     return true;
   }
 };
@@ -47,11 +75,22 @@ export const LoginAction = (user) => async (dispatch) => {
   if (Math.floor(res.status / 100) !== 2) {
     let message = res.response.data.message;
     dispatch(unexpectedErrorAction(message));
+
+    dispatch({
+      type: USER_RESET,
+      payload: {},
+    });
+
     return false;
   } else {
     dispatch(errorResetAction());
     localStorage.setItem("token", res.data.payload.token);
-    localStorage.setItem("User", res.data.payload.user);
+
+    dispatch({
+      type: LOGIN,
+      payload: res.data.payload.user,
+    });
+
     return true;
   }
 };

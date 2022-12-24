@@ -19,6 +19,7 @@ const userSchema = mongoose.Schema(
     email: {
       type: String,
       required: true,
+      unique: false,
     },
 
     role: { type: String, default: "fan" },
