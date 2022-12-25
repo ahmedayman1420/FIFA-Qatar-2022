@@ -134,7 +134,7 @@ function Authentication() {
     if (isSignIn) res = await login(user);
     else res = await register(user);
 
-    // if (res) navigate("/chats");
+    if (res) navigate("/home");
     setWaiting(false);
   };
 
@@ -144,7 +144,7 @@ function Authentication() {
     const token = res?.tokenId;
 
     let isDone = await dispatch(ContinueWithGoogleAction(token));
-    if (isDone) navigate(`/chats`);
+    if (isDone) navigate(`/home`);
   };
 
   const responseGoogleFailure = async (error) => {

@@ -66,9 +66,9 @@ const userJoi = {
       }),
   },
 
-  /* ================ /// <==> Search-Schema <==> /// ================ */
+  /* ================ /// <==> Get-Users-Schema <==> /// ================ */
 
-  searchUsersByEmailOrNameSchema: {
+  getUserSchema: {
     headers: joi
       .object()
       .required()
@@ -76,9 +76,20 @@ const userJoi = {
         authorization: joi.string().required(),
       })
       .options({ allowUnknown: true }),
+  },
 
-    query: joi.object().required().keys({
-      searchWord: joi.string().required(),
+  /* ================ /// <==> Approve-User-Auxthority-Schema <==> /// ================ */
+
+  approveUserAuthoritySchema: {
+    headers: joi
+      .object()
+      .required()
+      .keys({
+        authorization: joi.string().required(),
+      })
+      .options({ allowUnknown: true }),
+    params: joi.object().required().keys({
+      id: joi.string().required(),
     }),
   },
 };

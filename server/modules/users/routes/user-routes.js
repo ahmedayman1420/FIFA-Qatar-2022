@@ -41,13 +41,20 @@ router.post(
   userFunctions.googleSignIn
 );
 
-// search api
+// get all users api
 router.get(
-  "/search",
-  validateRequest(userSchemas.searchUsersByEmailOrNameSchema),
-  isAuthorized(userEndpoints.SearchUserByNameOrEmailAPI),
-  userFunctions.searchUsersByEmailOrName
+  "/user/get",
+  validateRequest(userSchemas.getUserSchema),
+  isAuthorized(userEndpoints.GetUserAPI),
+  userFunctions.getAllUsers
 );
 
+// Approve User Authority
+router.put(
+  "/user/approve/:id",
+  validateRequest(userSchemas.approveUserAuthoritySchema),
+  isAuthorized(userEndpoints.ApproveUserAuthorityAPI),
+  userFunctions.approveUserAuthority
+);
 // ====== --- ====== > Export Module < ====== --- ====== //
 module.exports = router;

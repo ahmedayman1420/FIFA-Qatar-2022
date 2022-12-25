@@ -1,8 +1,10 @@
 // ====== --- ====== > User module endpoints < ====== --- ====== //
-const SearchUserByNameOrEmailAPI = "User:SearchUserByNameOrEmailAPI";
+const GetUserAPI = "User:GetUserAPI";
+const ApproveUserAuthorityAPI = "User:ApproveUserAuthorityAPI";
 
 const userEndpoints = {
-  SearchUserByNameOrEmailAPI,
+  GetUserAPI,
+  ApproveUserAuthorityAPI,
 };
 
 // ====== --- ====== > Export user endpoints < ====== --- ====== //

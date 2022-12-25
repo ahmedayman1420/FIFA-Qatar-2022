@@ -21,6 +21,7 @@ const persistedReducer = persistReducer(persistConfig, reducers);
 const initialState = {
   error: { value: false, message: "", type: "" },
   user: {},
+  users: [],
 };
 
 // ===== --- ===== ### Store ### ===== --- ===== //

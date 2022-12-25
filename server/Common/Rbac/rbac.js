@@ -3,9 +3,12 @@ const Rbac = require("easy-rbac");
 const userEndpoints = require("../../modules/users/userEndpoints");
 const roles = require("../Enum/roles");
 // ====== --- ====== > Roles policies < ====== --- ====== //
-const fanPolicies = [userEndpoints.SearchUserByNameOrEmailAPI];
+const fanPolicies = [];
 const managerPolicies = [];
-const AdminPolicies = [];
+const AdminPolicies = [
+  userEndpoints.GetUserAPI,
+  userEndpoints.ApproveUserAuthorityAPI,
+];
 
 // ====== --- ====== > Match Between Roles & Them EndPoints < ====== --- ====== //
 const opts = {

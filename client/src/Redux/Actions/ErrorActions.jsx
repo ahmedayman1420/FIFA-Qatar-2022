@@ -9,6 +9,13 @@ export const unexpectedErrorAction = (mes) => async (dispatch) => {
   });
 };
 
+export const unexpectedErrorGetUsersAction = (mes) => async (dispatch) => {
+  dispatch({
+    type: UNEXPECTED_ERROR,
+    payload: { value: true, message: mes, type: "getUsers" },
+  });
+};
+
 export const errorResetAction = () => async (dispatch) => {
   dispatch({
     type: ERROR_RESET,

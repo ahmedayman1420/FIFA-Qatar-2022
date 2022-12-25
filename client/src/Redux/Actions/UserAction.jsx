@@ -4,14 +4,21 @@ import {
   USER_RESET,
   CONTINUE_WITH_GOOGLE,
   LOGIN,
+  USERS_RESET,
+  SET_USERS,
 } from "./ActionStrings";
 
 // ===== --- ===== ### Error-Action ### ===== --- ===== //
-import { errorResetAction, unexpectedErrorAction } from "./ErrorActions";
+import {
+  errorResetAction,
+  unexpectedErrorAction,
+  unexpectedErrorGetUsersAction,
+} from "./ErrorActions";
 
 // ===== --- ===== ### User-APIs ### ===== --- ===== //
 import {
   ContinueWithGoogleAPI,
+  GetAllUsersAPI,
   signInAPI,
   signUpAPI,
 } from "../../APIs/UserAPIs";
@@ -32,9 +39,9 @@ export const ContinueWithGoogleAction = (token) => async (dispatch) => {
     return false;
   } else {
     dispatch(errorResetAction());
-    localStorage.setItem("token", res.data.payload.token);
+    await localStorage.setItem("token", res.data.payload.token);
 
-    dispatch({
+    await dispatch({
       type: CONTINUE_WITH_GOOGLE,
       payload: res.data.payload.user,
     });
@@ -58,9 +65,9 @@ export const SignUpAction = (user) => async (dispatch) => {
     return false;
   } else {
     dispatch(errorResetAction());
-    localStorage.setItem("token", res.data.payload.token);
+    await localStorage.setItem("token", res.data.payload.token);
 
-    dispatch({
+    await dispatch({
       type: REGISTER,
       payload: res.data.payload.user,
     });
@@ -84,11 +91,37 @@ export const LoginAction = (user) => async (dispatch) => {
     return false;
   } else {
     dispatch(errorResetAction());
-    localStorage.setItem("token", res.data.payload.token);
+    await localStorage.setItem("token", res.data.payload.token);
 
-    dispatch({
+    await dispatch({
       type: LOGIN,
       payload: res.data.payload.user,
+    });
+
+    return true;
+  }
+};
+
+export const GetAllUsersAction = (token) => async (dispatch) => {
+  const res = await GetAllUsersAPI(token);
+
+  if (Math.floor(res.status / 100) !== 2) {
+    let message = res.response.data.message;
+    console.log({ ResponseError: res });
+    dispatch(unexpectedErrorGetUsersAction(message));
+
+    dispatch({
+      type: USERS_RESET,
+      payload: {},
+    });
+
+    return false;
+  } else {
+    dispatch(errorResetAction());
+
+    await dispatch({
+      type: SET_USERS,
+      payload: res.data.payload.users,
     });
 
     return true;

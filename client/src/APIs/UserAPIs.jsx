@@ -51,3 +51,17 @@ export const ContinueWithGoogleAPI = async (token) => {
     return error;
   }
 };
+
+export const GetAllUsersAPI = async (token) => {
+  try {
+    const res = await client.get(`/user/get`, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return res;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};

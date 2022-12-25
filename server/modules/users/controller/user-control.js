@@ -164,25 +164,20 @@ const googleSignIn = async (req, res) => {
 };
 
 /*
-//==// searchUsersByEmailOrName: is the logic of '/search' api that used to get users with (name, email) fields.
-the response of this function in success (users), in failure (show error message).
+//==// Get All Users
 */
 
-const searchUsersByEmailOrName = async (req, res) => {
+const getAllUsers = async (req, res) => {
   try {
-    let { searchWord } = req.query;
-    let { email } = req.decoded;
+    let { username } = req.decoded;
 
-    const oldUser = await users.findOne({ email });
+    const oldUser = await users.findOne({ username });
     if (oldUser) {
-      const data = await users
-        .find({
-          $or: [
-            { name: { $regex: searchWord, $options: "i" } },
-            { email: { $regex: searchWord, $options: "i" } },
-          ],
-        })
-        .find({ email: { $ne: email } });
+      const data = await users.find({
+        role: {
+          $in: ["fan", "manager"],
+        },
+      });
 
       res.status(StatusCodes.CREATED).json({
         message: "Found Users",
@@ -196,10 +191,42 @@ const searchUsersByEmailOrName = async (req, res) => {
   }
 };
 
+/*
+//==// Approve User Authority
+*/
+
+const approveUserAuthority = async (req, res) => {
+  try {
+    let { username } = req.decoded;
+    let { id } = req.params;
+
+    const oldUser = await users.findOne({ username });
+    if (oldUser) {
+      const data = await users.updateOne(
+        {
+          _id: id,
+        },
+        {
+          role: "manager",
+        }
+      );
+
+      res.status(StatusCodes.CREATED).json({
+        message: "User Updated",
+        payload: { data },
+      });
+    } else
+      res.status(StatusCodes.BAD_REQUEST).json({ message: "User Not Found !" });
+  } catch (error) {
+    console.log(error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
+  }
+};
 // ====== --- ====== > Export Module < ====== --- ====== //
 module.exports = {
   signUp,
   signIn,
   googleSignIn,
-  searchUsersByEmailOrName,
+  getAllUsers,
+  approveUserAuthority,
 };
