@@ -24,14 +24,14 @@ import { USERS_RESET } from "./Redux/Actions/ActionStrings";
 function App() {
   // ===== --- ===== ### Clear-On-Browser-Close ### ===== --- ===== //
   const dispatch = useDispatch();
-  window.onbeforeunload = () => {
-    // Clear the local storage
-    alert("HERE");
-    dispatch({
-      type: USERS_RESET,
-      payload: {},
-    });
-  };
+  // window.onbeforeunload = () => {
+  //   // Clear the local storage
+  //   alert("HERE");
+  //   dispatch({
+  //     type: USERS_RESET,
+  //     payload: {},
+  //   });
+  // };
 
   return (
     <div className="App">

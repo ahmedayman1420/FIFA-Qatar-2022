@@ -31,6 +31,7 @@ const ValidateRequest = (schema) => {
       } else next();
     } catch (error) {
       console.log("Error In Validate req Function");
+      console.log(error);
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         message: "Error In Validate req Function",
       });
