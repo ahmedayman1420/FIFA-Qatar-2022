@@ -56,5 +56,14 @@ router.put(
   isAuthorized(userEndpoints.ApproveUserAuthorityAPI),
   userFunctions.approveUserAuthority
 );
+
+// Delete User
+router.delete(
+  "/user/delete/:id",
+  validateRequest(userSchemas.deleteUserSchema),
+  isAuthorized(userEndpoints.DeleteUserAPI),
+  userFunctions.deleteUser
+);
+
 // ====== --- ====== > Export Module < ====== --- ====== //
 module.exports = router;

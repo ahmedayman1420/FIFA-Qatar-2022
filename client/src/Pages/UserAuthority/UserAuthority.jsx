@@ -14,7 +14,11 @@ import rm from "../../Images/rm.jpg";
 import Style from "./UserAuthority.module.scss";
 
 // ===== --- ===== ### Users-Actions ### ===== --- ===== //
-import { GetAllUsersAction } from "../../Redux/Actions/UserAction";
+import {
+  ApproveUserAction,
+  DeleteUserAction,
+  GetAllUsersAction,
+} from "../../Redux/Actions/UserAction";
 
 // ===== --- ===== ### External-Components ### ===== --- ===== //
 import Loading from "../../Components/Loading/Loading";
@@ -31,10 +35,16 @@ function UserAuthority() {
   // ===== --- ===== ### Component-States ### ===== --- ===== //
   let [waiting, setWaiting] = useState();
   const [show, setShow] = useState(false);
+  const [deletedId, setDeletedId] = useState(null);
 
   // ===== --- ===== ### Component-Functions ### ===== --- ===== //
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleClose = () => {
+    setShow(false);
+    setDeletedId(null);
+  };
+  const handleShow = () => {
+    setShow(true);
+  };
 
   const getAllUser = async () => {
     if (users.length === 0) {
@@ -45,7 +55,20 @@ function UserAuthority() {
     }
   };
 
-  const handleApproveUser = async (id, index) => {};
+  const handleApproveUser = async (id) => {
+    // Dispatch Event Update user
+    // Call API
+    // setWaiting(true);
+    let token = localStorage.getItem("token");
+    let isDone = await dispatch(ApproveUserAction(token, id));
+    // setWaiting(false);
+  };
+
+  const handleDeleteUser = async (id) => {
+    let token = localStorage.getItem("token");
+    let isDone = await dispatch(DeleteUserAction(token, id));
+    setDeletedId(null);
+  };
 
   useEffect(() => {
     setWaiting(true);
@@ -54,10 +77,16 @@ function UserAuthority() {
   }, []);
 
   // ===== --- ===== ### Component-JSX ### ===== --- ===== //
+
   return (
     <>
       {!waiting ? (
-        <div className="mt-5">
+        <div
+          className=""
+          style={{
+            marginTop: "150px",
+          }}
+        >
           <div className={Style.mainImg}></div>
           <div>
             <img
@@ -132,7 +161,10 @@ function UserAuthority() {
                         <Button
                           variant="danger"
                           className="w-100"
-                          onClick={handleShow}
+                          onClick={async () => {
+                            await setDeletedId(user._id);
+                            handleShow();
+                          }}
                         >
                           Delete
                         </Button>
@@ -152,7 +184,13 @@ function UserAuthority() {
               <Button variant="secondary" onClick={handleClose}>
                 Close
               </Button>
-              <Button variant="danger" onClick={handleClose}>
+              <Button
+                variant="danger"
+                onClick={() => {
+                  handleDeleteUser(deletedId);
+                  handleClose();
+                }}
+              >
                 Delete
               </Button>
             </Modal.Footer>

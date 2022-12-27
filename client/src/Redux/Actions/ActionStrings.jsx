@@ -11,3 +11,5 @@ export const USER_RESET = "USER_RESET";
 // ===== --- ===== ### Users-Strings ### ===== --- ===== //
 export const USERS_RESET = "USERS_RESET";
 export const SET_USERS = "SET_USERS";
+export const UPDATE_USER_ROLE = "UPDATE_USER_ROLE";
+export const DELETE_USER = "DELETE_USER";

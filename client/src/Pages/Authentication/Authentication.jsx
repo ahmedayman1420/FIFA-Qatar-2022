@@ -4,6 +4,9 @@ import React, { useEffect, useState } from "react";
 // ===== --- ===== ### Style-Component ### ===== --- ===== //
 import Style from "./Authentication.module.scss";
 
+// ===== --- ===== ### Images ### ===== --- ===== //
+import rm from "../../Images/rm.jpg";
+
 // ===== --- ===== ### React-Bootstrap ### ===== --- ===== //
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -178,16 +181,29 @@ function Authentication() {
   console.log({ isValidUser });
   return (
     <>
+      <div className={Style.mainImg}></div>
+      <div>
+        <img
+          src={rm}
+          alt=""
+          className="rounded-circle"
+          style={{
+            width: "200px",
+            height: "200px",
+            position: "absolute",
+          }}
+        />
+      </div>
       {!waiting ? (
         <div
-          className="mt-5 d-flex justify-content-center align-items-center"
-          style={{}}
+          className=" d-flex justify-content-center align-items-center "
+          style={{ marginTop: "150px" }}
         >
           <Form
             className="w-50 p-4 rounded-1"
             onSubmit={handleSubmit}
             style={{
-              backgroundColor: "#bcbcb84b",
+              backgroundColor: "#EBEBEA",
             }}
           >
             <div className="text-center ">
@@ -460,7 +476,7 @@ function Authentication() {
             {/* // ===== --- ===== ### Submit-Buttons ### ===== --- ===== // */}
             <Button
               type="submit"
-              className={[Style.submitBtn, "w-100 mb-3"].join(" ")}
+              className={["w-100 mb-3"].join(" ")}
               style={{
                 backgroundColor: "#8b1538",
                 borderColor: "#8b1538",

@@ -65,3 +65,35 @@ export const GetAllUsersAPI = async (token) => {
     return error;
   }
 };
+
+export const ApproveUserAPI = async (token, id) => {
+  try {
+    const res = await client.put(
+      `/user/approve/${id}`,
+      {},
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+export const DeleteUserAPI = async (token, id) => {
+  try {
+    const res = await client.delete(`/user/delete/${id}`, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return res;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};

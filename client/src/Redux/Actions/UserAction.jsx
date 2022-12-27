@@ -6,6 +6,8 @@ import {
   LOGIN,
   USERS_RESET,
   SET_USERS,
+  UPDATE_USER_ROLE,
+  DELETE_USER,
 } from "./ActionStrings";
 
 // ===== --- ===== ### Error-Action ### ===== --- ===== //
@@ -13,11 +15,15 @@ import {
   errorResetAction,
   unexpectedErrorAction,
   unexpectedErrorGetUsersAction,
+  unexpectedErrorApproveUserAction,
+  unexpectedErrorDeleteUserAction,
 } from "./ErrorActions";
 
 // ===== --- ===== ### User-APIs ### ===== --- ===== //
 import {
+  ApproveUserAPI,
   ContinueWithGoogleAPI,
+  DeleteUserAPI,
   GetAllUsersAPI,
   signInAPI,
   signUpAPI,
@@ -122,6 +128,61 @@ export const GetAllUsersAction = (token) => async (dispatch) => {
     await dispatch({
       type: SET_USERS,
       payload: res.data.payload.users,
+    });
+
+    return true;
+  }
+};
+
+export const ApproveUserAction = (token, id) => async (dispatch) => {
+  const res = await ApproveUserAPI(token, id);
+
+  if (Math.floor(res.status / 100) !== 2) {
+    let message = res.response.data.message;
+    console.log({ ResponseError: res });
+    dispatch(unexpectedErrorApproveUserAction(message));
+
+    dispatch({
+      type: USERS_RESET,
+      payload: {},
+    });
+
+    return false;
+  } else {
+    dispatch(errorResetAction());
+
+    await dispatch({
+      type: UPDATE_USER_ROLE,
+      payload: id,
+    });
+
+    return true;
+  }
+};
+
+export const DeleteUserAction = (token, id) => async (dispatch) => {
+  const res = await DeleteUserAPI(token, id);
+
+  if (Math.floor(res.status / 100) !== 2) {
+    console.log("HERE ERROR");
+    let message = res.response.data.message;
+    console.log({ ResponseError: res });
+    dispatch(unexpectedErrorDeleteUserAction(message));
+
+    dispatch({
+      type: USERS_RESET,
+      payload: {},
+    });
+
+    return false;
+  } else {
+    console.log("HERE DONE");
+
+    dispatch(errorResetAction());
+
+    await dispatch({
+      type: DELETE_USER,
+      payload: id,
     });
 
     return true;

@@ -27,6 +27,7 @@ function NavigationBar() {
   console.log({ path: location.pathname });
   // ===== --- ===== ### Component-States ### ===== --- ===== //
   let [isAdmin, setIsAdmin] = useState(false);
+  let [isManager, setIsManager] = useState(false);
   let [waiting, setWaiting] = useState(true);
   let [isAuth, setIsAuth] = useState(false);
 
@@ -35,6 +36,7 @@ function NavigationBar() {
     let token = localStorage.getItem("token");
     let decoded = await jwt_decode(token);
     if (decoded.data.role === "admin") setIsAdmin(true);
+    if (decoded.data.role === "manager") setIsManager(true);
   };
 
   useEffect(() => {
@@ -52,6 +54,7 @@ function NavigationBar() {
   return (
     <Navbar
       expand="lg"
+      className="fixed-top"
       style={{
         backgroundColor: "#8b1538",
       }}
@@ -78,6 +81,11 @@ function NavigationBar() {
               {isAdmin && (
                 <Nav.Link as={NavLink} to="/user-auth" className="text-white">
                   User-Authority
+                </Nav.Link>
+              )}
+              {(isManager || isAdmin) && (
+                <Nav.Link as={NavLink} to="/stadium" className="text-white">
+                  Stadium
                 </Nav.Link>
               )}
               {Object.keys(user).length === 0 && (

@@ -16,6 +16,20 @@ export const unexpectedErrorGetUsersAction = (mes) => async (dispatch) => {
   });
 };
 
+export const unexpectedErrorApproveUserAction = (mes) => async (dispatch) => {
+  dispatch({
+    type: UNEXPECTED_ERROR,
+    payload: { value: true, message: mes, type: "ApproveUser" },
+  });
+};
+
+export const unexpectedErrorDeleteUserAction = (mes) => async (dispatch) => {
+  dispatch({
+    type: UNEXPECTED_ERROR,
+    payload: { value: true, message: mes, type: "DeleteUser" },
+  });
+};
+
 export const errorResetAction = () => async (dispatch) => {
   dispatch({
     type: ERROR_RESET,

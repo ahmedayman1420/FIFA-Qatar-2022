@@ -92,6 +92,20 @@ const userJoi = {
       id: joi.string().required(),
     }),
   },
+
+  /* ================ /// <==> Delete-User-Schema <==> /// ================ */
+  deleteUserSchema: {
+    headers: joi
+      .object()
+      .required()
+      .keys({
+        authorization: joi.string().required(),
+      })
+      .options({ allowUnknown: true }),
+    params: joi.object().required().keys({
+      id: joi.string().required(),
+    }),
+  },
 };
 
 /* ============= /// <==> Exports User Joi Validations <==> /// ============= */

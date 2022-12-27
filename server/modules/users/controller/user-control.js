@@ -112,6 +112,7 @@ const googleSignIn = async (req, res) => {
     let { firstName, lastName, username, email } = req.body;
     const oldUser = await users.findOne({
       email,
+      gender: "Google Login",
       isDeleted: false,
     });
     if (oldUser) {
@@ -222,6 +223,34 @@ const approveUserAuthority = async (req, res) => {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
   }
 };
+
+/*
+//==// Delete User
+*/
+
+const deleteUser = async (req, res) => {
+  try {
+    let { username } = req.decoded;
+    let { id } = req.params;
+
+    const oldUser = await users.findOne({ username });
+    if (oldUser) {
+      const data = await users.deleteOne({
+        _id: id,
+      });
+
+      res.status(StatusCodes.CREATED).json({
+        message: "User Deleted",
+        payload: { data },
+      });
+    } else
+      res.status(StatusCodes.BAD_REQUEST).json({ message: "User Not Found !" });
+  } catch (error) {
+    console.log(error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
+  }
+};
+
 // ====== --- ====== > Export Module < ====== --- ====== //
 module.exports = {
   signUp,
@@ -229,4 +258,5 @@ module.exports = {
   googleSignIn,
   getAllUsers,
   approveUserAuthority,
+  deleteUser,
 };

@@ -1,23 +1,18 @@
 // ======= --- ======= <| React-Router-Dom |> ======= --- ======= //
-import { Outlet, Navigate, useLocation } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 
 // ======= --- ======= <| JWT-Decode |> ======= --- ======= //
 import jwt_decode from "jwt-decode";
 
 // ======= --- ======= <| Component |> ======= --- ======= //
-const ProtectedRouteUser = () => {
-  const location = useLocation();
+const ProtectedRouteManager = () => {
   // ======= --- ======= <| Component-States |> ======= --- ======= //
   let token = localStorage.getItem("token");
   let auth = false;
 
   try {
     var decoded = jwt_decode(token);
-    if (
-      decoded.data.role === "admin" ||
-      decoded.data.role === "manager" ||
-      decoded.data.role === "fan"
-    )
+    if (decoded.data.role === "admin" || decoded.data.role === "manager")
       auth = true;
     else localStorage.clear();
   } catch (error) {
@@ -25,11 +20,6 @@ const ProtectedRouteUser = () => {
     auth = false;
   }
   return auth ? <Outlet /> : <Navigate to="/login" />;
-  // return auth ? (
-  //   <Outlet />
-  // ) : (
-  //   <Navigate to={"/signin?return=" + location.pathname} />
-  // );
 };
 
-export default ProtectedRouteUser;
+export default ProtectedRouteManager;
