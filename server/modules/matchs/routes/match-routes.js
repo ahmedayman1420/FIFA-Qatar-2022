@@ -31,8 +31,13 @@ router.put(
   matchFunctions.editMatch
 );
 
-// edit ticket api
-// router.put("/match/ticket", matchFunctions.updateTicket);
+// but ticket api
+router.post(
+  "/match/ticket",
+  // validateRequest(matchSchemas.editMatchSchema),
+  isAuthorized(matchEndpoints.BuyTicketAPI),
+  matchFunctions.buyTicket
+);
 
 // ====== --- ====== > Export Module < ====== --- ====== //
 module.exports = router;

@@ -4,9 +4,17 @@ import React, { useEffect, useState } from "react";
 // ===== --- ===== ### React-Bootstrap ### ===== --- ===== //
 import Button from "react-bootstrap/Button";
 
+// ===== --- ===== ### React-Redux ### ===== --- ===== //
+import { useDispatch, useSelector } from "react-redux";
+
 // ===== --- ===== ### External-Components ### ===== --- ===== //
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+
+// ===== --- ===== ### Axios ### ===== --- ===== //
 import axios from "axios";
+
+// ===== --- ===== ### Match-Actions ### ===== --- ===== //
+import { getAllMatchesAction } from "../../Redux/Actions/MatchActions";
 
 // ===== --- ===== ### Style-Component ### ===== --- ===== //
 const CARD_OPTIONS = {
@@ -30,11 +38,12 @@ const CARD_OPTIONS = {
 };
 
 // ===== --- ===== ### Component ### ===== --- ===== //
-export default function PaymentForm() {
+export default function PaymentForm({ tickets, matchId }) {
   // ===== --- ===== ### Component-States ### ===== --- ===== //
   const [success, setSuccess] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
+  const dispatch = useDispatch();
 
   // ===== --- ===== ### Component-Functions ### ===== --- ===== //
   const handleSubmit = async (e) => {
@@ -44,19 +53,31 @@ export default function PaymentForm() {
       card: elements.getElement(CardElement),
     });
 
-    alert("HERE");
+    // alert("HERE");
     console.log({ error });
     if (!error) {
       try {
+        let token = localStorage.getItem("token");
         const { id } = paymentMethod;
-        const response = await axios.post("http://localhost:5000/payment", {
-          amount: 50 * 100,
-          id,
-        });
+        const response = await axios.post(
+          "http://localhost:5000/match/ticket",
+          {
+            amount: 50 * 100,
+            id,
+            matchId,
+            boughtTickets: tickets,
+          },
+          {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (response.data.success) {
           console.log("Successful payment");
           setSuccess(true);
+          const res = await dispatch(getAllMatchesAction());
         }
       } catch (error) {
         console.log("Error", error);

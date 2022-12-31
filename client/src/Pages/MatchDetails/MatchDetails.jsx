@@ -318,58 +318,58 @@ function MatchDetails() {
                               width: "10%",
                             }}
                           >
-                            <div
-                              className={[""].join(" ")}
-                              style={{
-                                width: "max-content",
-                              }}
-                              onClick={() => {
-                                updateTicket(index);
-                              }}
-                            >
+                            {seat.length !== 24 && (
                               <div
                                 key={index}
+                                className={["mb-3"].join(" ")}
                                 style={{
-                                  width: "20px",
-                                  height: "20px",
-                                  borderRadius: "50%",
-                                  backgroundColor: "#EEEEE4",
+                                  width: "10%",
                                 }}
-                                className={[
-                                  "col-1",
-                                  tickets
-                                    .map((item) => {
-                                      if (item.key === index) return true;
-                                      else return false;
-                                    })
-                                    .filter(Boolean)[0]
-                                    ? Style.resSeat
-                                    : Style.seat,
-                                ].join(" ")}
-                              ></div>
-                            </div>
+                              >
+                                <div
+                                  className={[""].join(" ")}
+                                  style={{
+                                    width: "max-content",
+                                  }}
+                                  onClick={() => {
+                                    updateTicket(index);
+                                  }}
+                                >
+                                  <div
+                                    key={index}
+                                    style={{
+                                      width: "20px",
+                                      height: "20px",
+                                      borderRadius: "50%",
+                                      backgroundColor: "#EEEEE4",
+                                    }}
+                                    className={[
+                                      "col-1",
+                                      tickets
+                                        .map((item) => {
+                                          if (item.key === index) return true;
+                                          else return false;
+                                        })
+                                        .filter(Boolean)[0]
+                                        ? Style.resSeat
+                                        : Style.seat,
+                                    ].join(" ")}
+                                  ></div>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         );
                       })}
                     </div>
                   </div>
                   <div className="mb-4">
-                    {(isManager || isAdmin || isFan) && (
-                      <StripeContainer />
-                      //   <Button
-                      //     type="submit"
-                      //     className={["w-100 m-auto mb-3"].join(" ")}
-                      //     style={{
-                      //       fontWeight: "bold",
-                      //       fontSize: "20px",
-                      //       backgroundColor: "#8b1538",
-                      //       borderColor: "#8b1538",
-                      //     }}
-                      //     onClick={() => {}}
-                      //   >
-                      //     Buy a ticket
-                      //   </Button>
+                    {(isManager || isAdmin || isFan) && tickets.length && (
+                      <StripeContainer tickets={tickets} matchId={match._id} />
                     )}
+                    {(isManager || isAdmin || isFan) &&
+                      !tickets.length &&
+                      "-Select a seat"}
                   </div>
 
                   {/* <img

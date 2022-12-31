@@ -1,9 +1,13 @@
 // ====== --- ====== > Import Modules & Variables Declaration < ====== --- ====== //
 const matchs = require("../model/match-model");
 const users = require("../../users/model/user-model");
+const tickets = require("../model/ticket-model");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 const { StatusCodes } = require("http-status-codes");
+const stripe = require("stripe")(
+  "sk_test_51MLBW5CYNUMBhAJ0E3scKg3eOvp8hJE0SLV9vu2OPNiv36tdd1XpnsE7P3kmOH12KFUH9KRmZrEBR53C7uL38RKq00uHgUENi4"
+);
 
 // ====== --- ====== > Match-Methods < ====== --- ====== //
 /*
@@ -260,25 +264,79 @@ const editMatch = async (req, res) => {
   }
 };
 
-// const updateTicket = async (req, res) => {
-//   try {
-//     let { id, ticket } = req.body;
-//     let data = await matchs.updateOne({ _id: id }, { ticket });
+/*
+//==// buy ticket
+*/
+const buyTicket = async (req, res) => {
+  try {
+    let { amount, id, matchId, boughtTickets } = req.body;
+    let { username } = req.decoded;
 
-//     res.status(StatusCodes.CREATED).json({
-//       message: "Matchs Shown Successfully",
-//       payload: { data },
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
-//   }
-// };
+    console.log(boughtTickets[0].key);
+
+    const oldUser = await users.findOne({ username, isDeleted: false });
+    if (oldUser) {
+      let seatNumber = [];
+      let seat = 0;
+      for (var i = 0; i < boughtTickets.length; i++) {
+        seat = boughtTickets[i].key;
+        seatNumber.push(seat);
+      }
+
+      // ================= Create-Ticket ================= //
+      const newticket = new tickets({
+        seatNumber,
+        price: (amount / 100) * seatNumber.length,
+        matchId,
+        userId: oldUser._id,
+      });
+      const data = await newticket.save();
+
+      // ================= Update-Seats ================= //
+      const oldMatch = await matchs.findOne({ _id: matchId, isDeleted: false });
+      let vipSeats = oldMatch.vipSeats;
+      for (var i = 0; i < seatNumber.length; i++) {
+        vipSeats[seatNumber[i]] = oldUser._id;
+      }
+      const updatedMatch = await matchs.updateOne(
+        {
+          _id: matchId,
+          isDeleted: false,
+        },
+        {
+          vipSeats,
+        }
+      );
+
+      // ================= Payment ================= //
+      const payment = await stripe.paymentIntents.create({
+        amount,
+        currency: "USD",
+        description: "CMP Company",
+        payment_method: id,
+        confirm: true,
+      });
+      console.log("Payment", payment);
+      res.json({
+        message: "Payment successful",
+        success: true,
+      });
+    } else {
+      res.status(StatusCodes.BAD_REQUEST).json({ message: "User Not Found" });
+    }
+  } catch (error) {
+    console.log("Error", error);
+    res.json({
+      message: "Payment failed",
+      success: false,
+    });
+  }
+};
 // ====== --- ====== > Export Module < ====== --- ====== //
 module.exports = {
   craeteMatch,
   getHomeMatches,
   getMatches,
   editMatch,
-  // updateTicket,
+  buyTicket,
 };

@@ -11,11 +11,11 @@ const PUBLIC_KEY = process.env.React_App_Public_key;
 const stripeTestPromise = loadStripe(PUBLIC_KEY);
 
 // ===== --- ===== ### Component ### ===== --- ===== //
-export default function StripeContainer() {
+export default function StripeContainer({ tickets, matchId }) {
   return (
     <div>
       <Elements stripe={stripeTestPromise}>
-        <PaymentForm />
+        <PaymentForm tickets={tickets} matchId={matchId} />
       </Elements>
     </div>
   );

@@ -43,7 +43,7 @@ const isAuthorized = (endPoint) => {
           });
         }
       } else {
-        res.status(StatusCodes.BAD_req).json({
+        res.status(StatusCodes.BAD_REQUEST).json({
           message: "Token is required",
         });
       }

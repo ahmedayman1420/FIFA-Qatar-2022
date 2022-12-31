@@ -44,29 +44,6 @@ app.use(userRouter); // user routes
 app.use(stadiumRouter); // stadium routes
 app.use(matchRouter); // match routes
 
-app.post("/payment", cors(), async (req, res) => {
-  let { amount, id } = req.body;
-  try {
-    const payment = await stripe.paymentIntents.create({
-      amount,
-      currency: "USD",
-      description: "CMP Company",
-      payment_method: id,
-      confirm: true,
-    });
-    console.log("Payment", payment);
-    res.json({
-      message: "Payment successful",
-      success: true,
-    });
-  } catch (error) {
-    console.log("Error", error);
-    res.json({
-      message: "Payment failed",
-      success: false,
-    });
-  }
-});
 /*
 //==// To setup your middleware, you can invoke app.use(<specific_middleware_layer_here>) for every middleware 
 layer that you want to add (it can be generic to all paths, or triggered only on specific path(s)
