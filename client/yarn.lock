@@ -7333,7 +7333,7 @@ prop-types-extra@^1.1.0:
     react-is "^16.3.2"
     warning "^4.0.0"
 
-prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.8.1:
+prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -7432,6 +7432,14 @@ react-app-polyfill@^3.0.0:
     raf "^3.4.1"
     regenerator-runtime "^0.13.9"
     whatwg-fetch "^3.6.2"
+
+react-bootstrap-time-picker@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-bootstrap-time-picker/-/react-bootstrap-time-picker-2.0.1.tgz#dbb343558478b4e35d82b464862a0748621852b7"
+  integrity sha512-hbZyoLWav9P6UPTQPQRoC7rQT5UYb0a4Cs/8Wiszs1Rda/cH3Ar1B2uM78GKJjXMK0VYGR9XKyza2BCnLJ+ZSA==
+  dependencies:
+    prop-types "^15.7.2"
+    time-number "^1.1.0"
 
 react-bootstrap@^2.5.0:
   version "2.5.0"
@@ -8560,6 +8568,11 @@ thunky@^1.0.2:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.1.0.tgz#5abaf714a9405db0504732bbccd2cedd9ef9537d"
   integrity sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==
+
+time-number@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/time-number/-/time-number-1.1.0.tgz#93a00193a2e4f841bfba87513987f4dbe3c09a4e"
+  integrity sha512-vEVrQgdzeXEtXVWVMm7DaI+SV1pqHaelcKsCQiV+fJgDAnSCmdBqHAt4KA/KPUNVNr3VxY+jOJ2vc+a32ZkNGg==
 
 tmpl@1.0.5:
   version "1.0.5"

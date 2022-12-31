@@ -1,7 +1,12 @@
 // ===== --- ===== ### Stadium-Regex ### ===== --- ===== //
 const validName = new RegExp(
   // Valid name
-  /^([A-Za-z0-9]+\s*)+$/
+  /^([A-Za-z0-9,]+\s*)+$/
+);
+
+const validLink = new RegExp(
+  // Valid Link
+  /(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/
 );
 
 const validSeat = new RegExp(
@@ -20,4 +25,5 @@ export const stadiumRegex = {
   vipLength: validSeat,
 
   image: "",
+  exploreMore: validLink,
 };

@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 // ====== --- ====== > Stadium-Schema < ====== --- ====== //
 const stadiumSchema = mongoose.Schema(
   {
-    name: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
 
     location: { type: String, required: true },
 
@@ -18,6 +18,8 @@ const stadiumSchema = mongoose.Schema(
     vipLength: { type: Number, required: true },
 
     image: { type: String, required: true },
+
+    exploreMore: { type: String, required: true },
 
     createdBy: { type: mongoose.Types.ObjectId, required: true, ref: "users" },
     isDeleted: { type: Boolean, default: false },

@@ -8,6 +8,8 @@ import {
   SET_USERS,
   UPDATE_USER_ROLE,
   DELETE_USER,
+  STADIUMS_RESET,
+  MATCHS_RESET,
 } from "./ActionStrings";
 
 // ===== --- ===== ### Error-Action ### ===== --- ===== //
@@ -187,4 +189,22 @@ export const DeleteUserAction = (token, id) => async (dispatch) => {
 
     return true;
   }
+};
+
+export const LogoutAction = () => async (dispatch) => {
+  dispatch({
+    type: USERS_RESET,
+  });
+
+  dispatch({
+    type: USER_RESET,
+  });
+
+  dispatch({
+    type: STADIUMS_RESET,
+  });
+
+  dispatch({
+    type: MATCHS_RESET,
+  });
 };

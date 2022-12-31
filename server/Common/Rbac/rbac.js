@@ -1,11 +1,15 @@
 // ====== --- ====== > Modules endpoints < ====== --- ====== //
 const Rbac = require("easy-rbac");
+const matchEndpoints = require("../../modules/matchs/matchEndpoints");
 const stadiumEndpoints = require("../../modules/stadiums/stadiumEndpoints");
 const userEndpoints = require("../../modules/users/userEndpoints");
 const roles = require("../Enum/roles");
 // ====== --- ====== > Roles policies < ====== --- ====== //
 const fanPolicies = [];
-const managerPolicies = [stadiumEndpoints.CreateStadiumAPI];
+const managerPolicies = [
+  stadiumEndpoints.CreateStadiumAPI,
+  matchEndpoints.CreateMatchAPI,
+];
 const AdminPolicies = [
   userEndpoints.GetUserAPI,
   userEndpoints.ApproveUserAuthorityAPI,

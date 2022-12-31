@@ -10,6 +10,10 @@ import Home from "./Pages/Home/Home.jsx";
 import NavigationBar from "./Components/NavigationBar/NavigationBar";
 import UserAuthority from "./Pages/UserAuthority/UserAuthority";
 import Stadium from "./Pages/Stadium/Stadium";
+import Stadiums from "./Pages/Stadiums/Stadiums";
+import CreateMatch from "./Pages/CreateMatch/CreateMatch";
+import Matches from "./Pages/Matches/Matches";
+import MatchDetails from "./Pages/MatchDetails/MatchDetails";
 
 import ProtectedRouteAdmin from "./Components/ProtectedRoute/ProtectedRouteAdmin";
 import ProtectedRouteUser from "./Components/ProtectedRoute/ProtectedRouteUser";
@@ -23,7 +27,7 @@ import { USERS_RESET } from "./Redux/Actions/ActionStrings";
 // ===== --- ===== ### App-Component ### ===== --- ===== //
 function App() {
   // ===== --- ===== ### Clear-On-Browser-Close ### ===== --- ===== //
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // window.onbeforeunload = () => {
   //   // Clear the local storage
   //   alert("HERE");
@@ -48,7 +52,12 @@ function App() {
 
         <Route element={<ProtectedRouteManager />}>
           <Route exact path="/stadium" element={<Stadium />} />
+          <Route exact path="/create-match/:id" element={<CreateMatch />} />
         </Route>
+
+        <Route exact path="/stadiums" element={<Stadiums />} />
+        <Route exact path="/matches" element={<Matches />} />
+        <Route exact path="/match-details/:id" element={<MatchDetails />} />
 
         <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>

@@ -22,13 +22,18 @@ const initialState = {
   error: { value: false, message: "", type: "" },
   user: {},
   users: [],
+  stadiums: [],
+  matches: [],
 };
 
 // ===== --- ===== ### Store ### ===== --- ===== //
 export const store = createStore(
   persistedReducer,
   initialState,
-  compose(applyMiddleware(thunk))
+  compose(
+    applyMiddleware(thunk),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
 );
 // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 

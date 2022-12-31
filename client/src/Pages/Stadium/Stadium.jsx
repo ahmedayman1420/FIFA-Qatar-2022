@@ -6,10 +6,11 @@ import { Container } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
+import Carousel from "react-bootstrap/Carousel";
 
 // ===== --- ===== ### Images ### ===== --- ===== //
 import rm from "../../Images/rm.jpg";
-
+import img from "../../Images/Bayt.png";
 // ===== --- ===== ### Stadium-Component-Style ### ===== --- ===== //
 import Style from "./Stadium.module.scss";
 
@@ -25,6 +26,9 @@ import Loading from "../../Components/Loading/Loading";
 // ===== --- ===== ### React-Redux ### ===== --- ===== //
 import { useDispatch, useSelector } from "react-redux";
 
+// ===== --- ===== ### JWT-Decode ### ===== --- ===== //
+import jwt_decode from "jwt-decode";
+
 // ===== --- ===== ### Stadium-Actions ### ===== --- ===== //
 import { createStadiumAction } from "../../Redux/Actions/StadiumActions";
 
@@ -35,6 +39,8 @@ function Stadium() {
 
   // ===== --- ===== ### Component-States ### ===== --- ===== //
   let [waiting, setWaiting] = useState();
+  let [isAdmin, setIsAdmin] = useState(false);
+  let [isManager, setIsManager] = useState(false);
   let [stadium, setStadium] = useState({
     name: "",
     location: "",
@@ -46,6 +52,7 @@ function Stadium() {
     vipLength: 0,
 
     image: "",
+    exploreMore: "",
   });
 
   let [isFirstTime, setIsFirstTime] = useState({
@@ -59,6 +66,7 @@ function Stadium() {
     vipLength: true,
 
     image: true,
+    exploreMore: true,
   });
 
   let [isValidStadium, setIsValidStadium] = useState({
@@ -72,9 +80,22 @@ function Stadium() {
     vipLength: false,
 
     image: false,
+    exploreMore: false,
   });
 
   // ===== --- ===== ### Component-Functions ### ===== --- ===== //
+  const [index, setIndex] = useState(0);
+
+  const handleSelect = (selectedIndex, e) => {
+    setIndex(selectedIndex);
+  };
+
+  const getUserRole = async () => {
+    let token = localStorage.getItem("token");
+    let decoded = await jwt_decode(token);
+    if (decoded.data.role === "admin") setIsAdmin(true);
+    if (decoded.data.role === "manager") setIsManager(true);
+  };
 
   const getStadium = ({ target }) => {
     setStadium((prevStadium) => {
@@ -115,24 +136,63 @@ function Stadium() {
     }
   };
 
-  const handleCreateStadium = async () => {
-    alert("HEREE");
+  const handleCreateStadium = async (e) => {
+    e.preventDefault();
+    setWaiting(true);
     const cloudinaryResponse = await UploadImg(stadium.image);
     let token = localStorage.getItem("token");
-    console.log({ stadium });
-    console.log({ token });
-    alert("HEREE");
     let res = await dispatch(
       createStadiumAction(
         { ...stadium, image: cloudinaryResponse.data.secure_url },
         token
       )
     );
-    return res;
+    if (res) e.target.reset();
+    setStadium({
+      name: "",
+      location: "",
+      openDate: "",
+
+      seats: 0,
+      vipSeats: 0,
+      vipWidth: 0,
+      vipLength: 0,
+
+      image: "",
+      exploreMore: "",
+    });
+    setIsFirstTime({
+      name: true,
+      location: true,
+      openDate: true,
+
+      seats: true,
+      vipSeats: true,
+      vipWidth: true,
+      vipLength: true,
+
+      image: true,
+      exploreMore: true,
+    });
+    setIsValidStadium({
+      name: false,
+      location: false,
+      openDate: false,
+
+      seats: false,
+      vipSeats: false,
+      vipWidth: false,
+      vipLength: false,
+
+      image: false,
+      exploreMore: false,
+    });
+    setWaiting(false);
   };
 
   useEffect(() => {
     setWaiting(true);
+    getUserRole();
     setWaiting(false);
   }, []);
 
@@ -226,6 +286,33 @@ function Stadium() {
                         <li>Lowercase letter</li>
                         <li>Numbers</li>
                       </ul>
+                    </Alert.Heading>
+                  </Alert>
+                )}
+              </Form.Group>
+
+              {/* // ===== --- ===== ### Explore-More-Input ### ===== --- ===== // */}
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Explore more</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter stadium explore more link"
+                  required={true}
+                  name="exploreMore"
+                  onChange={(e) => {
+                    let res = checkStadiumRegex(e);
+                    if (res) getStadium(e);
+                    if (isFirstTime[e.target.name])
+                      setIsFirstTime((prevStadium) => {
+                        return { ...prevStadium, [e.target.name]: false };
+                      });
+                  }}
+                />
+
+                {!isFirstTime.exploreMore && !isValidStadium.exploreMore && (
+                  <Alert variant="danger">
+                    <Alert.Heading>
+                      <p>Enter a valid link</p>
                     </Alert.Heading>
                   </Alert>
                 )}
@@ -365,8 +452,8 @@ function Stadium() {
                     handleStadiumImg(e);
 
                     if (isFirstTime.image)
-                      setIsFirstTime((prevUser) => {
-                        return { ...prevUser, image: false };
+                      setIsFirstTime((prevStadium) => {
+                        return { ...prevStadium, image: false };
                       });
                   }}
                 />

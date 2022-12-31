@@ -16,6 +16,7 @@ const stadiumJoi = {
       vipWidth: joi.number().required(),
       vipLength: joi.number().required(),
 
+      exploreMore: joi.string(),
       image: joi.string(),
     }),
     headers: joi

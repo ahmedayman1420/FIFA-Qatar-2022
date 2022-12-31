@@ -10,6 +10,9 @@ import { NavLink, useLocation } from "react-router-dom";
 // ===== --- ===== ### React-Redux ### ===== --- ===== //
 import { useDispatch, useSelector } from "react-redux";
 
+// ===== --- ===== ### Stadium-Actions ### ===== --- ===== //
+import { LogoutAction } from "../../Redux/Actions/UserAction";
+
 // ===== --- ===== ### React-Bootstrap ### ===== --- ===== //
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -24,7 +27,8 @@ import cupImg from "../../Images/logo.png";
 function NavigationBar() {
   const user = useSelector((state) => state.user);
   const location = useLocation();
-  console.log({ path: location.pathname });
+  const dispatch = useDispatch();
+
   // ===== --- ===== ### Component-States ### ===== --- ===== //
   let [isAdmin, setIsAdmin] = useState(false);
   let [isManager, setIsManager] = useState(false);
@@ -34,20 +38,27 @@ function NavigationBar() {
   // ===== --- ===== ### Component-Functions ### ===== --- ===== //
   const getUserRole = async () => {
     let token = localStorage.getItem("token");
-    let decoded = await jwt_decode(token);
-    if (decoded.data.role === "admin") setIsAdmin(true);
-    if (decoded.data.role === "manager") setIsManager(true);
+    if (token) {
+      let decoded = await jwt_decode(token);
+      if (decoded.data.role === "admin") setIsAdmin(true);
+      if (decoded.data.role === "manager") setIsManager(true);
+    } else {
+      setIsAdmin(false);
+      setIsManager(false);
+    }
   };
 
-  useEffect(() => {
+  const execute = async () => {
     setWaiting(true);
-
     if (location.pathname === "/register" || location.pathname === "/login")
       setIsAuth(true);
     else setIsAuth(false);
-    getUserRole();
-
+    await getUserRole();
     setWaiting(false);
+  };
+
+  useEffect(() => {
+    execute();
   }, [location.pathname]);
 
   // ===== --- ===== ### Component-JSX ### ===== --- ===== //
@@ -85,12 +96,44 @@ function NavigationBar() {
               )}
               {(isManager || isAdmin) && (
                 <Nav.Link as={NavLink} to="/stadium" className="text-white">
-                  Stadium
+                  Create Stadium
                 </Nav.Link>
               )}
+              {(isManager || isAdmin) && (
+                <Nav.Link
+                  as={NavLink}
+                  to="/create-match/0"
+                  className="text-white"
+                >
+                  Create Match
+                </Nav.Link>
+              )}
+
+              <Nav.Link as={NavLink} to="/matches" className="text-white">
+                Matches
+              </Nav.Link>
+
+              <Nav.Link as={NavLink} to="/stadiums" className="text-white">
+                Stadiums
+              </Nav.Link>
+
               {Object.keys(user).length === 0 && (
                 <Nav.Link as={NavLink} to="/login" className="text-white">
                   Login
+                </Nav.Link>
+              )}
+
+              {Object.keys(user).length !== 0 && (
+                <Nav.Link
+                  as={NavLink}
+                  onClick={async () => {
+                    localStorage.clear();
+                    await dispatch(LogoutAction({}));
+                  }}
+                  to="/login"
+                  className="text-white"
+                >
+                  Logout
                 </Nav.Link>
               )}
             </Nav>

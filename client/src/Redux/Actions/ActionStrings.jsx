@@ -13,3 +13,14 @@ export const USERS_RESET = "USERS_RESET";
 export const SET_USERS = "SET_USERS";
 export const UPDATE_USER_ROLE = "UPDATE_USER_ROLE";
 export const DELETE_USER = "DELETE_USER";
+
+// ===== --- ===== ### Stadiums-Strings ### ===== --- ===== //
+export const CREATE_STADIUM = "CREATE_STADIUM";
+export const GET_STADIUMS = "GET_STADIUMS";
+export const STADIUMS_RESET = "STADIUMS_RESET";
+
+// ===== --- ===== ### Match-Strings ### ===== --- ===== //
+export const CREATE_MATCH = "CREATE_MATCH";
+export const GET_HOME_MATCHS = "GET_HOME_MATCHS";
+export const GET_ALL_MATCHS = "GET_ALL_MATCHS";
+export const MATCHS_RESET = "MATCHS_RESET";

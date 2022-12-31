@@ -14,14 +14,22 @@ const client = axios.create({
 // ===== --- ===== ### Stadium-APIs ### ===== --- ===== //
 export const createStadiumAPI = async (stadium, token) => {
   try {
-    console.log({ stadium });
-    console.log({ token });
-    alert("HEREE");
     const res = await client.post(`/stadium/create`, stadium, {
       headers: {
         authorization: `Bearer ${token}`,
       },
     });
+
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// ===== --- ===== ### Stadiums-APIs ### ===== --- ===== //
+export const getStadiumsAPI = async () => {
+  try {
+    const res = await client.get(`/stadiums/get`);
     return res;
   } catch (error) {
     console.log(error);

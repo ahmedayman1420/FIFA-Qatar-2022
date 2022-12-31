@@ -21,6 +21,7 @@ const craeteStadium = async (req, res) => {
       vipWidth,
       vipLength,
 
+      exploreMore,
       image,
     } = req.body;
     let { username } = req.decoded;
@@ -37,6 +38,7 @@ const craeteStadium = async (req, res) => {
         vipWidth,
         vipLength,
 
+        exploreMore,
         image,
         createdBy: oldUser._id,
       });
@@ -55,7 +57,26 @@ const craeteStadium = async (req, res) => {
   }
 };
 
+/*
+//==// Get Stadiums
+*/
+
+const getStadiums = async (req, res) => {
+  try {
+    const fifaStadiums = await stadiums.find({});
+
+    res.status(StatusCodes.CREATED).json({
+      message: "Stadiums Shown Successfully",
+      payload: { stadiums: fifaStadiums },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
+  }
+};
+
 // ====== --- ====== > Export Module < ====== --- ====== //
 module.exports = {
   craeteStadium,
+  getStadiums,
 };

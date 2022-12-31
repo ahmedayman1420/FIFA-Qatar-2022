@@ -1,0 +1,12 @@
+.mainImg {
+  width: 100%;
+  height: 100%;
+  background-image: url("../../Images/rm.jpg");
+  background-size: cover;
+  position: fixed;
+  z-index: -1;
+  top: 30px;
+}
+.seat:hover {
+  cursor: pointer;
+}

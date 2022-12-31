@@ -1,53 +1,62 @@
 // ===== --- ===== ### Action-String ### ===== --- ===== //
-import {
-  REGISTER,
-  USER_RESET,
-  CONTINUE_WITH_GOOGLE,
-  LOGIN,
-  USERS_RESET,
-  SET_USERS,
-  UPDATE_USER_ROLE,
-  DELETE_USER,
-} from "./ActionStrings";
+import { CREATE_STADIUM, GET_STADIUMS, USER_RESET } from "./ActionStrings";
 
 // ===== --- ===== ### Error-Action ### ===== --- ===== //
 import {
   errorResetAction,
-  unexpectedErrorAction,
-  unexpectedErrorGetUsersAction,
-  unexpectedErrorApproveUserAction,
-  unexpectedErrorDeleteUserAction,
+  unexpectedErrorCreateStadiumAction,
+  unexpectedErrorGetStadiumsAction,
 } from "./ErrorActions";
 
 // ===== --- ===== ### User-APIs ### ===== --- ===== //
-import { createStadiumAPI } from "../../APIs/StadiumAPI";
+import { createStadiumAPI, getStadiumsAPI } from "../../APIs/StadiumAPI";
 
 // ===== --- ===== ### Stadium-Action ### ===== --- ===== //
 export const createStadiumAction = (stadium, token) => async (dispatch) => {
-  console.log({ stadium });
-  console.log({ token });
-  alert("HEREE");
-
   const res = await createStadiumAPI(stadium, token);
 
   if (Math.floor(res.status / 100) !== 2) {
     let message = res.response.data.message;
-    // dispatch(unexpectedErrorAction(message));
+    dispatch(unexpectedErrorCreateStadiumAction(message));
 
-    // dispatch({
-    //   type: USER_RESET,
-    //   payload: {},
-    // });
+    dispatch({
+      type: USER_RESET,
+      payload: {},
+    });
 
     return false;
   } else {
-    // dispatch(errorResetAction());
-    // await localStorage.setItem("token", res.data.payload.token);
+    dispatch(errorResetAction());
 
-    // await dispatch({
-    //   type: CONTINUE_WITH_GOOGLE,
-    //   payload: res.data.payload.user,
-    // });
+    await dispatch({
+      type: CREATE_STADIUM,
+      payload: res.data.payload.stadium,
+    });
+
+    return true;
+  }
+};
+
+export const getStadiumsAction = () => async (dispatch) => {
+  const res = await getStadiumsAPI();
+
+  if (Math.floor(res.status / 100) !== 2) {
+    let message = res.response.data.message;
+    dispatch(unexpectedErrorGetStadiumsAction(message));
+
+    dispatch({
+      type: USER_RESET,
+      payload: {},
+    });
+
+    return false;
+  } else {
+    dispatch(errorResetAction());
+
+    await dispatch({
+      type: GET_STADIUMS,
+      payload: res.data.payload.stadiums,
+    });
 
     return true;
   }

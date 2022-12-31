@@ -17,5 +17,8 @@ router.post(
   stadiumsFunctions.craeteStadium
 );
 
+// get stadium api
+router.get("/stadiums/get", stadiumsFunctions.getStadiums);
+
 // ====== --- ====== > Export Module < ====== --- ====== //
 module.exports = router;
