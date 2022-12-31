@@ -3,6 +3,9 @@ const express = require("express");
 const app = express();
 const env = require("dotenv");
 const cors = require("cors");
+const stripe = require("stripe")(
+  "sk_test_51MLBW5CYNUMBhAJ0E3scKg3eOvp8hJE0SLV9vu2OPNiv36tdd1XpnsE7P3kmOH12KFUH9KRmZrEBR53C7uL38RKq00uHgUENi4"
+);
 
 /*
 //==// Express is a minimal and flexible Node.js web application framework that
@@ -40,6 +43,30 @@ app.use(express.json()); // General Middleware
 app.use(userRouter); // user routes
 app.use(stadiumRouter); // stadium routes
 app.use(matchRouter); // match routes
+
+app.post("/payment", cors(), async (req, res) => {
+  let { amount, id } = req.body;
+  try {
+    const payment = await stripe.paymentIntents.create({
+      amount,
+      currency: "USD",
+      description: "CMP Company",
+      payment_method: id,
+      confirm: true,
+    });
+    console.log("Payment", payment);
+    res.json({
+      message: "Payment successful",
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error", error);
+    res.json({
+      message: "Payment failed",
+      success: false,
+    });
+  }
+});
 /*
 //==// To setup your middleware, you can invoke app.use(<specific_middleware_layer_here>) for every middleware 
 layer that you want to add (it can be generic to all paths, or triggered only on specific path(s)

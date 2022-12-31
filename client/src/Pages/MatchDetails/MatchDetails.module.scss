@@ -7,6 +7,17 @@
   z-index: -1;
   top: 30px;
 }
+
+.seat {
+  background-color: #eeeee4 !important;
+}
+.resSeat {
+  background-color: #007500 !important;
+}
+
 .seat:hover {
+  cursor: pointer;
+}
+.resSeat:hover {
   cursor: pointer;
 }

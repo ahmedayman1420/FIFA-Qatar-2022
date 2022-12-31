@@ -9,6 +9,7 @@ const matchSchema = mongoose.Schema(
     team2: { type: String, required: true },
 
     stadium: { type: mongoose.Types.ObjectId, required: true, ref: "stadiums" },
+    ticket: { type: Number, required: true },
     matchTime: { type: Number, required: true },
     matchDate: { type: Date, required: true },
 

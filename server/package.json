@@ -20,6 +20,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.6.3",
     "nodemon": "^2.0.20",
-    "rbac": "^5.0.3"
+    "rbac": "^5.0.3",
+    "stripe": "^11.5.0"
   }
 }

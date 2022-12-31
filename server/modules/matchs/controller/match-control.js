@@ -16,6 +16,7 @@ const craeteMatch = async (req, res) => {
       team2,
 
       stadium,
+      ticket,
       matchTime,
       matchDate,
 
@@ -49,6 +50,7 @@ const craeteMatch = async (req, res) => {
           team2,
 
           stadium,
+          ticket,
           matchTime,
           matchDate,
 
@@ -202,6 +204,9 @@ const editMatch = async (req, res) => {
     if (oldUser) {
       const oldMatches = await matchs.find({
         matchDate: match.matchDate,
+        _id: {
+          $ne: match._id,
+        },
         $or: [
           {
             team1: {
@@ -254,10 +259,26 @@ const editMatch = async (req, res) => {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
   }
 };
+
+// const updateTicket = async (req, res) => {
+//   try {
+//     let { id, ticket } = req.body;
+//     let data = await matchs.updateOne({ _id: id }, { ticket });
+
+//     res.status(StatusCodes.CREATED).json({
+//       message: "Matchs Shown Successfully",
+//       payload: { data },
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
+//   }
+// };
 // ====== --- ====== > Export Module < ====== --- ====== //
 module.exports = {
   craeteMatch,
   getHomeMatches,
   getMatches,
   editMatch,
+  // updateTicket,
 };

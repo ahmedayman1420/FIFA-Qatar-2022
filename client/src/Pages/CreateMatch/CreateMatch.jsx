@@ -58,6 +58,7 @@ function CreateMatch() {
     team2: "",
 
     stadium: "",
+    ticket: "",
     matchTime: "",
     matchDate: "",
 
@@ -72,6 +73,7 @@ function CreateMatch() {
     team2: true,
 
     stadium: true,
+    ticket: true,
     matchTime: true,
     matchDate: true,
 
@@ -86,6 +88,7 @@ function CreateMatch() {
     team2: false,
 
     stadium: false,
+    ticket: false,
     matchTime: false,
     matchDate: false,
 
@@ -146,6 +149,7 @@ function CreateMatch() {
       team2: "",
 
       stadium: "",
+      ticket: "",
       matchTime: "",
       matchDate: "",
 
@@ -159,6 +163,7 @@ function CreateMatch() {
       team2: false,
 
       stadium: false,
+      ticket: false,
       matchTime: false,
       matchDate: false,
 
@@ -172,6 +177,7 @@ function CreateMatch() {
       team2: true,
 
       stadium: true,
+      ticket: true,
       matchTime: true,
       matchDate: true,
 
@@ -209,6 +215,7 @@ function CreateMatch() {
         team2: false,
 
         stadium: false,
+        ticket: false,
         matchTime: false,
         matchDate: false,
 
@@ -222,6 +229,7 @@ function CreateMatch() {
         team2: true,
 
         stadium: true,
+        ticket: true,
         matchTime: true,
         matchDate: true,
 
@@ -359,6 +367,34 @@ function CreateMatch() {
                     );
                   })}
                 </Form.Select>
+              </Form.Group>
+
+              {/* // ===== --- ===== ### Match-Ticket-Price-Input ### ===== --- ===== // */}
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Ticket price </Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Enter ticket price"
+                  required={true}
+                  name="ticket"
+                  value={match.ticket}
+                  onChange={(e) => {
+                    let res = checkMatchRegex(e);
+                    if (res) getMatch(e);
+
+                    if (isFirstTime[e.target.name])
+                      setIsFirstTime((prevMatch) => {
+                        return { ...prevMatch, [e.target.name]: false };
+                      });
+                  }}
+                />
+                {!isFirstTime.ticket && !isValidMatch.ticket && (
+                  <Alert variant="danger">
+                    <Alert.Heading>
+                      <p>Error match ticket</p>
+                    </Alert.Heading>
+                  </Alert>
+                )}
               </Form.Group>
 
               {/* // ===== --- ===== ### Match-Referees-Input ### ===== --- ===== // */}

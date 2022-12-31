@@ -1,6 +1,9 @@
 // ===== --- ===== ### React ### ===== --- ===== //
 import React, { useEffect, useState } from "react";
 
+// ===== --- ===== ### External-Components ### ===== --- ===== //
+import StripeContainer from "./StripeContainer";
+
 // ===== --- ===== ### JWT-Decode ### ===== --- ===== //
 import jwt_decode from "jwt-decode";
 
@@ -80,10 +83,12 @@ function MatchDetails() {
   const location = useLocation();
 
   // ===== --- ===== ### Component-States ### ===== --- ===== //
+  let [isFan, setIsFan] = useState(false);
   let [isAdmin, setIsAdmin] = useState(false);
   let [isManager, setIsManager] = useState(false);
   let [waiting, setWaiting] = useState(true);
   let [match, setMatch] = useState(null);
+  let [tickets, setTickets] = useState([]);
   let [flags, setFlags] = useState({
     Argentina,
     Australia,
@@ -127,9 +132,33 @@ function MatchDetails() {
       let decoded = await jwt_decode(token);
       if (decoded.data.role === "admin") setIsAdmin(true);
       if (decoded.data.role === "manager") setIsManager(true);
+      if (decoded.data.role === "fan") setIsFan(true);
     } else {
       setIsAdmin(false);
       setIsManager(false);
+    }
+  };
+
+  const updateTicket = async (index) => {
+    let res = tickets.map((item) => {
+      if (item.key === index) return true;
+      else return false;
+    });
+
+    console.log({ res });
+
+    let tempTickets = tickets;
+    let length = tempTickets.length;
+    tempTickets = tempTickets.filter((item) => {
+      return item.key !== index;
+    });
+
+    if (length > tempTickets.length) {
+      setTickets(tempTickets);
+    } else {
+      setTickets((prevTickets) => {
+        return [...prevTickets, { key: index }];
+      });
     }
   };
 
@@ -142,6 +171,7 @@ function MatchDetails() {
       return match._id === matchId;
     })[0];
     await setMatch(match);
+    // setTickets(match.vipSeats);
     setWaiting(false);
   };
 
@@ -151,6 +181,8 @@ function MatchDetails() {
   }, [location.pathname]);
 
   // ===== --- ===== ### Component-JSX ### ===== --- ===== //
+
+  console.log({ tickets });
 
   return (
     <>
@@ -202,6 +234,9 @@ function MatchDetails() {
                   }}
                 >
                   <span className="date">{match.matchDate.slice(0, 10)}</span>
+                  <div className="my-4">
+                    <p>Ticket price: {match.ticket}$</p>
+                  </div>
                 </h3>
                 <div className="countries-image d-flex justify-content-around align-items-center">
                   <div className="team1 text-center">
@@ -248,6 +283,7 @@ function MatchDetails() {
                   }}
                 >
                   <div className="time">{match.matchTime}:00</div>
+
                   <div className="my-5">
                     <p>Referee: {match.referee}</p>
                     <div className="Referee d-flex justify-content-between">
@@ -283,20 +319,33 @@ function MatchDetails() {
                             }}
                           >
                             <div
-                              className={["", Style.seat].join(" ")}
+                              className={[""].join(" ")}
                               style={{
                                 width: "max-content",
+                              }}
+                              onClick={() => {
+                                updateTicket(index);
                               }}
                             >
                               <div
                                 key={index}
                                 style={{
-                                  backgroundColor: "#EEEEE4",
                                   width: "20px",
                                   height: "20px",
                                   borderRadius: "50%",
+                                  backgroundColor: "#EEEEE4",
                                 }}
-                                className="seat col-1"
+                                className={[
+                                  "col-1",
+                                  tickets
+                                    .map((item) => {
+                                      if (item.key === index) return true;
+                                      else return false;
+                                    })
+                                    .filter(Boolean)[0]
+                                    ? Style.resSeat
+                                    : Style.seat,
+                                ].join(" ")}
                               ></div>
                             </div>
                           </div>
@@ -304,26 +353,49 @@ function MatchDetails() {
                       })}
                     </div>
                   </div>
-                  <img src={match.stadium.image} alt="" />
+                  <div className="mb-4">
+                    {(isManager || isAdmin || isFan) && (
+                      <StripeContainer />
+                      //   <Button
+                      //     type="submit"
+                      //     className={["w-100 m-auto mb-3"].join(" ")}
+                      //     style={{
+                      //       fontWeight: "bold",
+                      //       fontSize: "20px",
+                      //       backgroundColor: "#8b1538",
+                      //       borderColor: "#8b1538",
+                      //     }}
+                      //     onClick={() => {}}
+                      //   >
+                      //     Buy a ticket
+                      //   </Button>
+                    )}
+                  </div>
+
+                  {/* <img
+                    className="w-100 mb-4"
+                    src={match.stadium.image}
+                    alt=""
+                  /> */}
+
+                  {(isManager || isAdmin) && (
+                    <Button
+                      type="submit"
+                      className={["w-100 m-auto mb-3"].join(" ")}
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: "20px",
+                      }}
+                      variant="warning"
+                      onClick={() => {
+                        navigate(`/create-match/${match._id}`);
+                      }}
+                    >
+                      Edit macth event
+                    </Button>
+                  )}
                 </div>
               </div>
-
-              {(isManager || isAdmin) && (
-                <Button
-                  type="submit"
-                  className={["w-75 m-auto mb-3"].join(" ")}
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "20px",
-                  }}
-                  variant="warning"
-                  onClick={() => {
-                    navigate(`/create-match/${match._id}`);
-                  }}
-                >
-                  Edit macth event
-                </Button>
-              )}
             </div>
           </Container>
         </div>

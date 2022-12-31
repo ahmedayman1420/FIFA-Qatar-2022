@@ -14,6 +14,7 @@ const matchJoi = {
         team2: joi.string().required(),
 
         stadium: joi.string().hex().length(24).required(),
+        ticket: joi.number().required(),
         matchTime: joi.number().required(),
         matchDate: joi.date().required(),
 

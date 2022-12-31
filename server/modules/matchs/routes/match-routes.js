@@ -31,5 +31,8 @@ router.put(
   matchFunctions.editMatch
 );
 
+// edit ticket api
+// router.put("/match/ticket", matchFunctions.updateTicket);
+
 // ====== --- ====== > Export Module < ====== --- ====== //
 module.exports = router;
