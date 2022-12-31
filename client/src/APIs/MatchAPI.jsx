@@ -27,6 +27,25 @@ export const createMatchAPI = async (match, token) => {
   }
 };
 
+export const editMatchAPI = async (match, token) => {
+  try {
+    const res = await client.put(
+      `/match/edit`,
+      { match },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return res;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
 export const getHomeMatchesAPI = async () => {
   try {
     const res = await client.get(`/home-matches/get`);

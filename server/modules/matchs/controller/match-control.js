@@ -189,9 +189,75 @@ const getMatches = async (req, res) => {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
   }
 };
+
+/*
+//==// Edit Match
+*/
+const editMatch = async (req, res) => {
+  try {
+    let { match } = req.body;
+    let { username } = req.decoded;
+
+    const oldUser = await users.findOne({ username, isDeleted: false });
+    if (oldUser) {
+      const oldMatches = await matchs.find({
+        matchDate: match.matchDate,
+        $or: [
+          {
+            team1: {
+              $in: [match.team1, match.team2],
+            },
+          },
+          {
+            team2: {
+              $in: [match.team1, match.team2],
+            },
+          },
+        ],
+      });
+      if (oldMatches.length == 0) {
+        const data = await matchs.updateOne(
+          { _id: match._id },
+          {
+            team1: match.team1,
+            team2: match.team2,
+
+            stadium: match.stadium,
+            matchTime: match.matchTime,
+            matchDate: match.matchDate,
+
+            referee: match.referee,
+            linesmen1: match.linesmen1,
+            linesmen2: match.linesmen2,
+            varReferee: match.varReferee,
+          },
+          { new: true }
+        );
+
+        const updatedMatch = await matchs.findOne({
+          _id: match._id,
+        });
+
+        res.status(StatusCodes.CREATED).json({
+          message: "Matchs Edit Successfully",
+          payload: { match: updatedMatch },
+        });
+      } else
+        res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ message: "Team can not have two matches at the same day" });
+    } else {
+      res.status(StatusCodes.BAD_REQUEST).json({ message: "User Not Found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
+  }
+};
 // ====== --- ====== > Export Module < ====== --- ====== //
 module.exports = {
   craeteMatch,
   getHomeMatches,
   getMatches,
+  editMatch,
 };

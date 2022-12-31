@@ -21,6 +21,7 @@ export const STADIUMS_RESET = "STADIUMS_RESET";
 
 // ===== --- ===== ### Match-Strings ### ===== --- ===== //
 export const CREATE_MATCH = "CREATE_MATCH";
+export const EDIT_MATCH = "EDIT_MATCH";
 export const GET_HOME_MATCHS = "GET_HOME_MATCHS";
 export const GET_ALL_MATCHS = "GET_ALL_MATCHS";
 export const MATCHS_RESET = "MATCHS_RESET";

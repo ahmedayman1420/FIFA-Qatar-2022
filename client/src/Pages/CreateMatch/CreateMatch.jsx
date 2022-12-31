@@ -34,7 +34,10 @@ import jwt_decode from "jwt-decode";
 
 // ===== --- ===== ### Stadium-Actions ### ===== --- ===== //
 import { getStadiumsAction } from "../../Redux/Actions/StadiumActions";
-import { createMatchAction } from "../../Redux/Actions/MatchActions";
+import {
+  createMatchAction,
+  editMatchAction,
+} from "../../Redux/Actions/MatchActions";
 
 // ======= --- ======= <| React-Router-Dom |> ======= --- ======= //
 import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -102,7 +105,7 @@ function CreateMatch() {
   };
 
   const checkMatchRegex = ({ target }) => {
-    if (target.name == "matchTime") {
+    if (target.name === "matchTime") {
       if (target.value !== "" && target.value >= 0 && target.value < 24) {
         setIsValidMatch((prevMatch) => {
           return { ...prevMatch, [target.name]: true };
@@ -127,11 +130,16 @@ function CreateMatch() {
     }
   };
 
-  const handleCreateMatch = async (e) => {
+  const handleMatch = async (e) => {
     e.preventDefault();
     setWaiting(true);
     let token = localStorage.getItem("token");
-    let res = await dispatch(createMatchAction(match, token));
+
+    if (isEdit) {
+      var res = await dispatch(editMatchAction(match, token));
+    } else {
+      var res = await dispatch(createMatchAction(match, token));
+    }
     if (res) e.target.reset();
     setMatch({
       team1: "",
@@ -172,6 +180,8 @@ function CreateMatch() {
       linesmen2: true,
       varReferee: true,
     });
+    setIsEdit(false);
+
     setWaiting(false);
   };
 
@@ -183,44 +193,44 @@ function CreateMatch() {
     setWaiting(true);
 
     let matchId = await params["id"];
-    if (matchId !== 0) {
+    if (matchId !== "0") {
       var temp = await matches.filter((match) => {
         return match._id === matchId;
       })[0];
       setMatch(temp);
       setMatch((prevMatch) => {
-        return { ...prevMatch, stadium: prevMatch.stadium.name };
+        return { ...prevMatch, stadium: prevMatch.stadium._id };
       });
 
       setIsEdit(true);
+
+      setIsFirstTime({
+        team1: false,
+        team2: false,
+
+        stadium: false,
+        matchTime: false,
+        matchDate: false,
+
+        referee: false,
+        linesmen1: false,
+        linesmen2: false,
+        varReferee: false,
+      });
+      setIsValidMatch({
+        team1: true,
+        team2: true,
+
+        stadium: true,
+        matchTime: true,
+        matchDate: true,
+
+        referee: true,
+        linesmen1: true,
+        linesmen2: true,
+        varReferee: true,
+      });
     }
-
-    setIsFirstTime({
-      team1: false,
-      team2: false,
-
-      stadium: false,
-      matchTime: false,
-      matchDate: false,
-
-      referee: false,
-      linesmen1: false,
-      linesmen2: false,
-      varReferee: false,
-    });
-    setIsValidMatch({
-      team1: true,
-      team2: true,
-
-      stadium: true,
-      matchTime: true,
-      matchDate: true,
-
-      referee: true,
-      linesmen1: true,
-      linesmen2: true,
-      varReferee: true,
-    });
 
     setWaiting(false);
   };
@@ -262,7 +272,7 @@ function CreateMatch() {
               style={{
                 backgroundColor: "#EBEBEA",
               }}
-              onSubmit={handleCreateMatch}
+              onSubmit={handleMatch}
             >
               {/* // ===== --- ===== ### Match-First-Team-Input ### ===== --- ===== // */}
               <Form.Group className="mb-3" controlId="formBasicEmail">

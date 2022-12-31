@@ -312,6 +312,10 @@ function MatchDetails() {
                 <Button
                   type="submit"
                   className={["w-75 m-auto mb-3"].join(" ")}
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "20px",
+                  }}
                   variant="warning"
                   onClick={() => {
                     navigate(`/create-match/${match._id}`);

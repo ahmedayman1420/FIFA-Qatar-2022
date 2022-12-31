@@ -30,6 +30,19 @@ const matchJoi = {
       })
       .options({ allowUnknown: true }),
   },
+
+  editMatchSchema: {
+    body: joi.object().required().keys({
+      match: joi.object().required(),
+    }),
+    headers: joi
+      .object()
+      .required()
+      .keys({
+        authorization: joi.string().required(),
+      })
+      .options({ allowUnknown: true }),
+  },
 };
 
 /* ============= /// <==> Exports Match Joi Validations <==> /// ============= */

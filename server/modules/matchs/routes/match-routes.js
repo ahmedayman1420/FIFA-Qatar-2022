@@ -23,5 +23,13 @@ router.get("/home-matches/get", matchFunctions.getHomeMatches);
 // get all matches api
 router.get("/matches/get", matchFunctions.getMatches);
 
+// edit match api
+router.put(
+  "/match/edit",
+  validateRequest(matchSchemas.editMatchSchema),
+  isAuthorized(matchEndpoints.EditMatchAPI),
+  matchFunctions.editMatch
+);
+
 // ====== --- ====== > Export Module < ====== --- ====== //
 module.exports = router;

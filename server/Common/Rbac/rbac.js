@@ -9,6 +9,7 @@ const fanPolicies = [];
 const managerPolicies = [
   stadiumEndpoints.CreateStadiumAPI,
   matchEndpoints.CreateMatchAPI,
+  matchEndpoints.EditMatchAPI,
 ];
 const AdminPolicies = [
   userEndpoints.GetUserAPI,

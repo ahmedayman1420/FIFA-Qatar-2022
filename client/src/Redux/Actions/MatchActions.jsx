@@ -4,6 +4,7 @@ import {
   GET_HOME_MATCHS,
   GET_ALL_MATCHS,
   USER_RESET,
+  EDIT_MATCH,
 } from "./ActionStrings";
 
 // ===== --- ===== ### Error-Action ### ===== --- ===== //
@@ -15,6 +16,7 @@ import {
 // ===== --- ===== ### Match-APIs ### ===== --- ===== //
 import {
   createMatchAPI,
+  editMatchAPI,
   getAllMatchesAPI,
   getHomeMatchesAPI,
 } from "../../APIs/MatchAPI";
@@ -38,20 +40,32 @@ export const createMatchAction = (match, token) => async (dispatch) => {
       "-" +
       ("0" + date.getDate()).slice(-2);
 
-    // console.log({ matchDate: match.matchDate });
-    // console.log({ today });
-
-    // console.log({ matchTime: match.matchTime });
-    // console.log({ Hours: date.getHours() });
-
-    // console.log(match.matchDate >= today && match.matchTime > date.getHours());
-
-    if (match.matchDate >= today && match.matchTime > date.getHours()) {
+    if (match.matchDate > today) {
+      await dispatch({
+        type: CREATE_MATCH,
+        payload: res.data.payload.match,
+      });
+    } else if (match.matchDate === today && match.matchTime > date.getHours()) {
       await dispatch({
         type: CREATE_MATCH,
         payload: res.data.payload.match,
       });
     }
+    return true;
+  }
+};
+
+export const editMatchAction = (match, token) => async (dispatch) => {
+  const res = await editMatchAPI(match, token);
+
+  if (Math.floor(res.status / 100) !== 2) {
+    let message = res.response.data.message;
+    dispatch(unexpectedErrorCreateMatchAction(message));
+
+    return false;
+  } else {
+    dispatch(errorResetAction());
+    dispatch(getAllMatchesAction());
     return true;
   }
 };
