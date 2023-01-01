@@ -283,20 +283,19 @@ const buyTicket = async (req, res) => {
         seatNumber.push(seat);
       }
 
-      // ================= Create-Ticket ================= //
-      const newticket = new tickets({
-        seatNumber,
-        price: (amount / 100) * seatNumber.length,
-        matchId,
-        userId: oldUser._id,
-      });
-      const data = await newticket.save();
-
       // ================= Update-Seats ================= //
       const oldMatch = await matchs.findOne({ _id: matchId, isDeleted: false });
       let vipSeats = oldMatch.vipSeats;
       for (var i = 0; i < seatNumber.length; i++) {
-        vipSeats[seatNumber[i]] = oldUser._id;
+        if (vipSeats[seatNumber[i]] == 0) vipSeats[seatNumber[i]] = oldUser._id;
+        else {
+          res.json({
+            message: "Reserved Seats",
+            success: false,
+          });
+
+          break;
+        }
       }
       const updatedMatch = await matchs.updateOne(
         {
@@ -307,6 +306,15 @@ const buyTicket = async (req, res) => {
           vipSeats,
         }
       );
+
+      // ================= Create-Ticket ================= //
+      const newticket = new tickets({
+        seatNumber,
+        price: (amount / 100) * seatNumber.length,
+        matchId,
+        userId: oldUser._id,
+      });
+      const data = await newticket.save();
 
       // ================= Payment ================= //
       const payment = await stripe.paymentIntents.create({
