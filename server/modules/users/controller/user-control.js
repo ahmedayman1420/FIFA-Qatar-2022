@@ -251,6 +251,42 @@ const deleteUser = async (req, res) => {
   }
 };
 
+/*
+//==// Edit User
+*/
+
+const editUser = async (req, res) => {
+  try {
+    let { username } = req.decoded;
+    let { user } = req.body;
+
+    const oldUser = await users.findOne({ username });
+    if (oldUser) {
+      bcrypt.hash(user.password, 8, async function (err, hash) {
+        const data = await users.updateOne({
+          password: hash,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          birthDate: user.birthDate,
+          gender: user.gender,
+          nationality: user.nationality,
+        });
+
+        const updatedUser = await users.findOne({ username });
+
+        res.status(StatusCodes.CREATED).json({
+          message: "User Updated",
+          payload: { user: updatedUser },
+        });
+      });
+    } else
+      res.status(StatusCodes.BAD_REQUEST).json({ message: "User Not Found !" });
+  } catch (error) {
+    console.log(error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
+  }
+};
+
 // ====== --- ====== > Export Module < ====== --- ====== //
 module.exports = {
   signUp,
@@ -259,4 +295,5 @@ module.exports = {
   getAllUsers,
   approveUserAuthority,
   deleteUser,
+  editUser,
 };

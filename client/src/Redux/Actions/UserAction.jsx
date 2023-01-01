@@ -10,6 +10,8 @@ import {
   DELETE_USER,
   STADIUMS_RESET,
   MATCHS_RESET,
+  TICKETS_RESET,
+  EDIT_USER,
 } from "./ActionStrings";
 
 // ===== --- ===== ### Error-Action ### ===== --- ===== //
@@ -26,6 +28,7 @@ import {
   ApproveUserAPI,
   ContinueWithGoogleAPI,
   DeleteUserAPI,
+  editUserAPI,
   GetAllUsersAPI,
   signInAPI,
   signUpAPI,
@@ -103,6 +106,31 @@ export const LoginAction = (user) => async (dispatch) => {
 
     await dispatch({
       type: LOGIN,
+      payload: res.data.payload.user,
+    });
+
+    return true;
+  }
+};
+
+export const eidtUserAction = (user, token) => async (dispatch) => {
+  const res = await editUserAPI(user, token);
+
+  if (Math.floor(res.status / 100) !== 2) {
+    let message = res.response.data.message;
+    dispatch(unexpectedErrorAction(message));
+
+    dispatch({
+      type: USER_RESET,
+      payload: {},
+    });
+
+    return false;
+  } else {
+    dispatch(errorResetAction());
+
+    await dispatch({
+      type: EDIT_USER,
       payload: res.data.payload.user,
     });
 
@@ -206,5 +234,9 @@ export const LogoutAction = () => async (dispatch) => {
 
   dispatch({
     type: MATCHS_RESET,
+  });
+
+  dispatch({
+    type: TICKETS_RESET,
   });
 };

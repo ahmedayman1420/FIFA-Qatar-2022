@@ -4,6 +4,7 @@ import {
   REGISTER,
   LOGIN,
   USER_RESET,
+  EDIT_USER,
 } from "../Actions/ActionStrings";
 
 // ===== --- ===== ### User-Reducer ### ===== --- ===== //
@@ -16,6 +17,9 @@ const userReducer = (state = {}, action) => {
       return action.payload;
 
     case CONTINUE_WITH_GOOGLE:
+      return action.payload;
+
+    case EDIT_USER:
       return action.payload;
 
     case USER_RESET:

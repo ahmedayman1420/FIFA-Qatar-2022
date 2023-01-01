@@ -65,5 +65,12 @@ router.delete(
   userFunctions.deleteUser
 );
 
+// Edit User
+router.put(
+  "/user/edit",
+  // validateRequest(userSchemas.deleteUserSchema),
+  isAuthorized(userEndpoints.DeleteUserAPI),
+  userFunctions.editUser
+);
 // ====== --- ====== > Export Module < ====== --- ====== //
 module.exports = router;

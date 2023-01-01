@@ -97,3 +97,22 @@ export const DeleteUserAPI = async (token, id) => {
     return error;
   }
 };
+
+export const editUserAPI = async (user, token) => {
+  try {
+    const res = await client.put(
+      `/user/edit`,
+      { user },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return res;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};

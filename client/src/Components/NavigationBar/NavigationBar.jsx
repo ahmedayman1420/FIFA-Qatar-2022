@@ -117,6 +117,7 @@ function NavigationBar() {
                   Tickets
                 </Nav.Link>
               )}
+
               <Nav.Link as={NavLink} to="/matches" className="text-white">
                 Matches
               </Nav.Link>
@@ -124,6 +125,12 @@ function NavigationBar() {
               <Nav.Link as={NavLink} to="/stadiums" className="text-white">
                 Stadiums
               </Nav.Link>
+
+              {(isManager || isAdmin || isFan) && (
+                <Nav.Link as={NavLink} to="/profile" className="text-white">
+                  Profile
+                </Nav.Link>
+              )}
 
               {Object.keys(user).length === 0 && (
                 <Nav.Link as={NavLink} to="/login" className="text-white">

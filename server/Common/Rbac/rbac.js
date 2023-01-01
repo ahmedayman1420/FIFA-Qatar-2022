@@ -9,6 +9,7 @@ const fanPolicies = [
   matchEndpoints.BuyTicketAPI,
   matchEndpoints.GetTicketsAPI,
   matchEndpoints.DeleteTicketsAPI,
+  userEndpoints.EditUserAPI,
 ];
 const managerPolicies = [
   stadiumEndpoints.CreateStadiumAPI,

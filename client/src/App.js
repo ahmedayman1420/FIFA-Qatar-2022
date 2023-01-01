@@ -14,6 +14,8 @@ import Stadiums from "./Pages/Stadiums/Stadiums";
 import CreateMatch from "./Pages/CreateMatch/CreateMatch";
 import Matches from "./Pages/Matches/Matches";
 import MatchDetails from "./Pages/MatchDetails/MatchDetails";
+import Tickets from "./Pages/Tickets/Ticket";
+import Profile from "./Pages/Profile/Profile";
 
 import ProtectedRouteAdmin from "./Components/ProtectedRoute/ProtectedRouteAdmin";
 import ProtectedRouteUser from "./Components/ProtectedRoute/ProtectedRouteUser";
@@ -23,7 +25,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 // ===== --- ===== ### User-Action ### ===== --- ===== //
 import { USERS_RESET } from "./Redux/Actions/ActionStrings";
-import Tickets from "./Pages/Tickets/Ticket";
 
 // ===== --- ===== ### App-Component ### ===== --- ===== //
 function App() {
@@ -58,6 +59,7 @@ function App() {
 
         <Route element={<ProtectedRouteUser />}>
           <Route exact path="/tickets" element={<Tickets />} />
+          <Route exact path="/profile" element={<Profile />} />
         </Route>
 
         <Route exact path="/stadiums" element={<Stadiums />} />

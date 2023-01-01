@@ -13,6 +13,7 @@ export const USERS_RESET = "USERS_RESET";
 export const SET_USERS = "SET_USERS";
 export const UPDATE_USER_ROLE = "UPDATE_USER_ROLE";
 export const DELETE_USER = "DELETE_USER";
+export const EDIT_USER = "EDIT_USER";
 
 // ===== --- ===== ### Stadiums-Strings ### ===== --- ===== //
 export const CREATE_STADIUM = "CREATE_STADIUM";

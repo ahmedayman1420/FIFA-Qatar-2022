@@ -1,0 +1,35 @@
+.sign:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.password,
+.confirmPasswrod {
+  position: relative !important;
+}
+.posswordIcon,
+.confirmPasswrodIcon {
+  position: absolute !important;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 2%;
+}
+
+.posswordIcon:hover,
+.confirmPasswrodIcon:hover {
+  cursor: pointer;
+}
+
+.submitBtn {
+  background-color: "#8b1538" !important;
+}
+
+.mainImg {
+  width: 100%;
+  height: 100%;
+  background-image: url("../../Images/rm.jpg");
+  background-size: cover;
+  position: fixed;
+  z-index: -1;
+  top: 30px;
+}
