@@ -63,3 +63,31 @@ export const getAllMatchesAPI = async () => {
     console.log(error);
   }
 };
+
+export const getAllTicketsAPI = async (token) => {
+  try {
+    const res = await client.get(`/tickets/get`, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteTicketAPI = async (token, _id) => {
+  try {
+    const res = await client.delete(`/tickets/delete`, {
+      data: { _id },
+
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};

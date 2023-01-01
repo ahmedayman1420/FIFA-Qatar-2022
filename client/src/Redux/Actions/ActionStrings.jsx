@@ -25,3 +25,7 @@ export const EDIT_MATCH = "EDIT_MATCH";
 export const GET_HOME_MATCHS = "GET_HOME_MATCHS";
 export const GET_ALL_MATCHS = "GET_ALL_MATCHS";
 export const MATCHS_RESET = "MATCHS_RESET";
+
+// ===== --- ===== ### Ticket-Strings ### ===== --- ===== //
+export const GET_ALL_TICKETS = "GET_ALL_TICKETS";
+export const TICKETS_RESET = "TICKETS_RESET";

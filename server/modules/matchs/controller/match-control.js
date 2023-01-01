@@ -332,6 +332,69 @@ const buyTicket = async (req, res) => {
     });
   }
 };
+
+/*
+//==// Get All Tickets
+*/
+const getTickets = async (req, res) => {
+  try {
+    let { username } = req.decoded;
+
+    const oldUser = await users.findOne({ username, isDeleted: false });
+    if (oldUser) {
+      const data = await tickets
+        .find({ userId: oldUser._id })
+        .populate("userId")
+        .populate({
+          path: "matchId",
+          populate: {
+            path: "stadium",
+          },
+        });
+      res.status(StatusCodes.CREATED).json({
+        message: "Tickets Shown Successfully",
+        payload: { tickets: data },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
+  }
+};
+
+const deleteTicket = async (req, res) => {
+  try {
+    let { username } = req.decoded;
+    let { _id } = req.body;
+
+    const oldUser = await users.findOne({ username, isDeleted: false });
+    if (oldUser) {
+      const ticket = await tickets.findOne({ _id });
+      const match = await matchs.findOne({ _id: ticket.matchId });
+
+      let vipSeats = match.vipSeats;
+      let seatNumber = ticket.seatNumber;
+      for (var i = 0; i < seatNumber.length; i++) {
+        vipSeats[seatNumber[i]] = 0;
+      }
+
+      const data = await matchs.updateOne(
+        { _id: ticket.matchId },
+        { vipSeats }
+      );
+
+      const deletedData = await tickets.deleteOne({ _id });
+
+      res.status(StatusCodes.CREATED).json({
+        message: "Ticket Deleted Successfully",
+        payload: { tickets: data },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
+  }
+};
 // ====== --- ====== > Export Module < ====== --- ====== //
 module.exports = {
   craeteMatch,
@@ -339,4 +402,7 @@ module.exports = {
   getMatches,
   editMatch,
   buyTicket,
+  getTickets,
+  deleteTicket,
+  deleteTicket,
 };

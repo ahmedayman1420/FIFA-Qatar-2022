@@ -365,7 +365,11 @@ function MatchDetails() {
                   </div>
                   <div className="mb-4">
                     {(isManager || isAdmin || isFan) && tickets.length && (
-                      <StripeContainer tickets={tickets} matchId={match._id} />
+                      <StripeContainer
+                        tickets={tickets}
+                        matchId={match._id}
+                        price={match.ticket}
+                      />
                     )}
                     {(isManager || isAdmin || isFan) &&
                       !tickets.length &&

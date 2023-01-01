@@ -5,7 +5,11 @@ const stadiumEndpoints = require("../../modules/stadiums/stadiumEndpoints");
 const userEndpoints = require("../../modules/users/userEndpoints");
 const roles = require("../Enum/roles");
 // ====== --- ====== > Roles policies < ====== --- ====== //
-const fanPolicies = [matchEndpoints.BuyTicketAPI];
+const fanPolicies = [
+  matchEndpoints.BuyTicketAPI,
+  matchEndpoints.GetTicketsAPI,
+  matchEndpoints.DeleteTicketsAPI,
+];
 const managerPolicies = [
   stadiumEndpoints.CreateStadiumAPI,
   matchEndpoints.CreateMatchAPI,

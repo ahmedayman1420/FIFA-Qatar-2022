@@ -14,7 +14,10 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
 
 // ===== --- ===== ### Match-Actions ### ===== --- ===== //
-import { getAllMatchesAction } from "../../Redux/Actions/MatchActions";
+import {
+  getAllMatchesAction,
+  getAllTicketsAction,
+} from "../../Redux/Actions/MatchActions";
 
 // ===== --- ===== ### Style-Component ### ===== --- ===== //
 const CARD_OPTIONS = {
@@ -38,7 +41,7 @@ const CARD_OPTIONS = {
 };
 
 // ===== --- ===== ### Component ### ===== --- ===== //
-export default function PaymentForm({ tickets, matchId }) {
+export default function PaymentForm({ tickets, matchId, price }) {
   // ===== --- ===== ### Component-States ### ===== --- ===== //
   const [success, setSuccess] = useState(false);
   const stripe = useStripe();
@@ -59,10 +62,11 @@ export default function PaymentForm({ tickets, matchId }) {
       try {
         let token = localStorage.getItem("token");
         const { id } = paymentMethod;
+        console.log({ Price: price * 100 * tickets.length });
         const response = await axios.post(
           "http://localhost:5000/match/ticket",
           {
-            amount: 50 * 100,
+            amount: price * 100 * tickets.length,
             id,
             matchId,
             boughtTickets: tickets,
@@ -77,7 +81,10 @@ export default function PaymentForm({ tickets, matchId }) {
         if (response.data.success) {
           console.log("Successful payment");
           setSuccess(true);
+
+          let token = localStorage.getItem("token");
           const res = await dispatch(getAllMatchesAction());
+          const ticketRes = await dispatch(getAllTicketsAction(token));
         }
       } catch (error) {
         console.log("Error", error);

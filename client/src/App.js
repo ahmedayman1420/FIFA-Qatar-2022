@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 // ===== --- ===== ### User-Action ### ===== --- ===== //
 import { USERS_RESET } from "./Redux/Actions/ActionStrings";
+import Tickets from "./Pages/Tickets/Ticket";
 
 // ===== --- ===== ### App-Component ### ===== --- ===== //
 function App() {
@@ -53,6 +54,10 @@ function App() {
         <Route element={<ProtectedRouteManager />}>
           <Route exact path="/stadium" element={<Stadium />} />
           <Route exact path="/create-match/:id" element={<CreateMatch />} />
+        </Route>
+
+        <Route element={<ProtectedRouteUser />}>
+          <Route exact path="/tickets" element={<Tickets />} />
         </Route>
 
         <Route exact path="/stadiums" element={<Stadiums />} />

@@ -5,6 +5,7 @@ import {
   GET_ALL_MATCHS,
   USER_RESET,
   EDIT_MATCH,
+  GET_ALL_TICKETS,
 } from "./ActionStrings";
 
 // ===== --- ===== ### Error-Action ### ===== --- ===== //
@@ -16,8 +17,10 @@ import {
 // ===== --- ===== ### Match-APIs ### ===== --- ===== //
 import {
   createMatchAPI,
+  deleteTicketAPI,
   editMatchAPI,
   getAllMatchesAPI,
+  getAllTicketsAPI,
   getHomeMatchesAPI,
 } from "../../APIs/MatchAPI";
 
@@ -117,6 +120,39 @@ export const getAllMatchesAction = () => async (dispatch) => {
         return new Date(a.matchDate) - new Date(b.matchDate);
       }),
     });
+
+    return true;
+  }
+};
+
+export const getAllTicketsAction = (token) => async (dispatch) => {
+  const res = await getAllTicketsAPI(token);
+
+  if (Math.floor(res.status / 100) !== 2) {
+    let message = res.response.data.message;
+
+    return false;
+  } else {
+    dispatch(errorResetAction());
+    await dispatch({
+      type: GET_ALL_TICKETS,
+      payload: res.data.payload.tickets,
+    });
+
+    return true;
+  }
+};
+
+export const deleteTicketsAction = (token, _id) => async (dispatch) => {
+  const res = await deleteTicketAPI(token, _id);
+
+  if (Math.floor(res.status / 100) !== 2) {
+    let message = res.response.data.message;
+
+    return false;
+  } else {
+    dispatch(getAllTicketsAction(token));
+    dispatch(getAllMatchesAction());
 
     return true;
   }

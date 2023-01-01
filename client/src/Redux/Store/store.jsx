@@ -24,6 +24,7 @@ const initialState = {
   users: [],
   stadiums: [],
   matches: [],
+  tickets: [],
 };
 
 // ===== --- ===== ### Store ### ===== --- ===== //

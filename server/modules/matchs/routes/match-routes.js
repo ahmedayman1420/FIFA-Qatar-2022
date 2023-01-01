@@ -39,5 +39,20 @@ router.post(
   matchFunctions.buyTicket
 );
 
+// get tickets api
+router.get(
+  "/tickets/get",
+  // validateRequest(matchSchemas.editMatchSchema),
+  isAuthorized(matchEndpoints.GetTicketsAPI),
+  matchFunctions.getTickets
+);
+
+// delete tickets api
+router.delete(
+  "/tickets/delete",
+  // validateRequest(matchSchemas.editMatchSchema),
+  isAuthorized(matchEndpoints.DeleteTicketsAPI),
+  matchFunctions.deleteTicket
+);
 // ====== --- ====== > Export Module < ====== --- ====== //
 module.exports = router;

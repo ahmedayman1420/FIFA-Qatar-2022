@@ -32,6 +32,7 @@ function NavigationBar() {
   // ===== --- ===== ### Component-States ### ===== --- ===== //
   let [isAdmin, setIsAdmin] = useState(false);
   let [isManager, setIsManager] = useState(false);
+  let [isFan, setIsFan] = useState(false);
   let [waiting, setWaiting] = useState(true);
   let [isAuth, setIsAuth] = useState(false);
 
@@ -42,9 +43,11 @@ function NavigationBar() {
       let decoded = await jwt_decode(token);
       if (decoded.data.role === "admin") setIsAdmin(true);
       if (decoded.data.role === "manager") setIsManager(true);
+      if (decoded.data.role === "fan") setIsFan(true);
     } else {
       setIsAdmin(false);
       setIsManager(false);
+      setIsFan(false);
     }
   };
 
@@ -109,6 +112,11 @@ function NavigationBar() {
                 </Nav.Link>
               )}
 
+              {(isManager || isAdmin || isFan) && (
+                <Nav.Link as={NavLink} to="/tickets" className="text-white">
+                  Tickets
+                </Nav.Link>
+              )}
               <Nav.Link as={NavLink} to="/matches" className="text-white">
                 Matches
               </Nav.Link>
